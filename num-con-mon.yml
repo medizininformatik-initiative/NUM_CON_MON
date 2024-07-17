@@ -1,0 +1,17 @@
+library: num-con-mon.cql
+group:
+- type: Patient
+  population:
+  - expression: "Cohort 1"
+- type: Patient
+  population:
+  - expression: "Cohort 2"
+  stratifier:
+  - code: ik-number
+    expression: IkNumber
+  - code: department-key
+    expression: DepartmentKey
+  - code: gender
+    expression: Gender
+  - code: age-class
+    expression: AgeClass

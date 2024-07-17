@@ -1,0 +1,11 @@
+services:
+  blaze:
+    image: "samply/blaze:nightly"
+    environment:
+      LOG_LEVEL: "debug"
+    ports:
+    - "8080:8080"
+    volumes:
+    - "blaze-data:/app/data"
+volumes:
+  blaze-data:
