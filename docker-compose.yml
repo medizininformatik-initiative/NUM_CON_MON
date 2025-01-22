@@ -1,6 +1,6 @@
 services:
   blaze:
-    image: "samply/blaze:0.29"
+    image: "samply/blaze:0.31"
     environment:
       LOG_LEVEL: "debug"
     ports:
