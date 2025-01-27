@@ -1,0 +1,1033 @@
+{
+  "codeSystems": {
+    "type": "Library$CodeSystems",
+    "def": [
+      {
+        "accessLevel": "Public",
+        "name": "consent",
+        "type": "CodeSystemDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem",
+        "id": "urn:oid:2.16.840.1.113883.3.1937.777.24.5.3"
+      },
+      {
+        "accessLevel": "Public",
+        "name": "IdentifierType",
+        "type": "CodeSystemDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem",
+        "id": "http://fhir.de/CodeSystem/identifier-type-de-basis"
+      }
+    ]
+  },
+  "type": "Library",
+  "includes": {
+    "type": "Library$Includes",
+    "def": [
+      {
+        "path": "FHIRHelpers",
+        "type": "IncludeDef",
+        "version": "4.0.0",
+        "localIdentifier": "FHIRHelpers"
+      }
+    ]
+  },
+  "schemaIdentifier": {
+    "type": "VersionedIdentifier",
+    "id": "urn:hl7-org:elm",
+    "version": "r1"
+  },
+  "identifier": {
+    "type": "VersionedIdentifier",
+    "id": "num-con-mon"
+  },
+  "codes": {
+    "type": "Library$Codes",
+    "def": [
+      {
+        "accessLevel": "Public",
+        "name": "MDAT wissenschaftlich nutzen EU DSGVO NIVEAU",
+        "type": "CodeDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}Code",
+        "id": "2.16.840.1.113883.3.1937.777.24.5.3.8",
+        "codeSystem": {
+          "name": "consent",
+          "type": "CodeSystemRef",
+          "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem"
+        }
+      },
+      {
+        "accessLevel": "Public",
+        "name": "KKDAT 5J retrospektiv wissenschaftlich nutzen",
+        "type": "CodeDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}Code",
+        "id": "2.16.840.1.113883.3.1937.777.24.5.3.13",
+        "codeSystem": {
+          "name": "consent",
+          "type": "CodeSystemRef",
+          "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem"
+        }
+      }
+    ]
+  },
+  "contexts": {
+    "type": "Library$Contexts",
+    "def": [
+      {
+        "name": "Patient",
+        "type": "ContextDef"
+      }
+    ]
+  },
+  "usings": {
+    "type": "Library$Usings",
+    "def": [
+      {
+        "type": "UsingDef",
+        "uri": "urn:hl7-org:elm-types:r1",
+        "localIdentifier": "System"
+      },
+      {
+        "type": "UsingDef",
+        "uri": "http://hl7.org/fhir",
+        "version": "4.0.0",
+        "localIdentifier": "FHIR"
+      }
+    ]
+  },
+  "annotation": [
+    {
+      "translatorVersion": "2.11.0",
+      "type": "CqlToElmInfo",
+      "translatorOptions": "EnableResultTypes"
+    }
+  ],
+  "statements": {
+    "type": "Library$Statements",
+    "def": [
+      {
+        "expression": {
+          "type": "SingletonFrom",
+          "operand": {
+            "type": "Retrieve",
+            "dataType": "{http://hl7.org/fhir}Patient"
+          }
+        },
+        "name": "Patient",
+        "type": "ExpressionDef",
+        "context": "Patient"
+      },
+      {
+        "accessLevel": "Public",
+        "expression": {
+          "type": "Exists",
+          "operand": {
+            "resultTypeSpecifier": {
+              "type": "ListTypeSpecifier",
+              "elementType": {
+                "name": "{http://hl7.org/fhir}Consent",
+                "type": "NamedTypeSpecifier"
+              }
+            },
+            "where": {
+              "type": "Contains",
+              "operand": [
+                {
+                  "return": {
+                    "expression": {
+                      "name": "ToCode",
+                      "type": "FunctionRef",
+                      "libraryName": "FHIRHelpers",
+                      "operand": [
+                        {
+                          "name": "X",
+                          "type": "AliasRef"
+                        }
+                      ]
+                    },
+                    "type": "ReturnClause",
+                    "distinct": false
+                  },
+                  "type": "Query",
+                  "source": [
+                    {
+                      "expression": {
+                        "resultTypeSpecifier": {
+                          "type": "ListTypeSpecifier",
+                          "elementType": {
+                            "name": "{http://hl7.org/fhir}Coding",
+                            "type": "NamedTypeSpecifier"
+                          }
+                        },
+                        "type": "Flatten",
+                        "operand": {
+                          "where": {
+                            "type": "Not",
+                            "operand": {
+                              "type": "IsNull",
+                              "operand": {
+                                "path": "coding",
+                                "type": "Property",
+                                "source": {
+                                  "name": "$this",
+                                  "type": "AliasRef"
+                                }
+                              }
+                            }
+                          },
+                          "return": {
+                            "expression": {
+                              "path": "coding",
+                              "type": "Property",
+                              "source": {
+                                "name": "$this",
+                                "type": "AliasRef"
+                              }
+                            },
+                            "type": "ReturnClause",
+                            "distinct": false
+                          },
+                          "type": "Query",
+                          "source": [
+                            {
+                              "expression": {
+                                "resultTypeSpecifier": {
+                                  "type": "ListTypeSpecifier",
+                                  "elementType": {
+                                    "name": "{http://hl7.org/fhir}CodeableConcept",
+                                    "type": "NamedTypeSpecifier"
+                                  }
+                                },
+                                "type": "Flatten",
+                                "operand": {
+                                  "where": {
+                                    "type": "Not",
+                                    "operand": {
+                                      "type": "IsNull",
+                                      "operand": {
+                                        "path": "code",
+                                        "type": "Property",
+                                        "source": {
+                                          "name": "$this",
+                                          "type": "AliasRef"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "return": {
+                                    "expression": {
+                                      "path": "code",
+                                      "type": "Property",
+                                      "source": {
+                                        "name": "$this",
+                                        "type": "AliasRef"
+                                      }
+                                    },
+                                    "type": "ReturnClause",
+                                    "distinct": false
+                                  },
+                                  "type": "Query",
+                                  "source": [
+                                    {
+                                      "expression": {
+                                        "path": "provision",
+                                        "resultTypeSpecifier": {
+                                          "type": "ListTypeSpecifier",
+                                          "elementType": {
+                                            "name": "{http://hl7.org/fhir}Consent.Provision",
+                                            "type": "NamedTypeSpecifier"
+                                          }
+                                        },
+                                        "type": "Property",
+                                        "source": {
+                                          "path": "provision",
+                                          "type": "Property",
+                                          "scope": "C",
+                                          "resultTypeName": "{http://hl7.org/fhir}Consent.Provision"
+                                        }
+                                      },
+                                      "type": "AliasedQuerySource",
+                                      "alias": "$this"
+                                    }
+                                  ]
+                                }
+                              },
+                              "type": "AliasedQuerySource",
+                              "alias": "$this"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "AliasedQuerySource",
+                      "alias": "X"
+                    }
+                  ]
+                },
+                {
+                  "name": "MDAT wissenschaftlich nutzen EU DSGVO NIVEAU",
+                  "type": "CodeRef",
+                  "resultTypeName": "{urn:hl7-org:elm-types:r1}Code"
+                }
+              ],
+              "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+            },
+            "relationship": [],
+            "type": "Query",
+            "source": [
+              {
+                "resultTypeSpecifier": {
+                  "type": "ListTypeSpecifier",
+                  "elementType": {
+                    "name": "{http://hl7.org/fhir}Consent",
+                    "type": "NamedTypeSpecifier"
+                  }
+                },
+                "expression": {
+                  "resultTypeSpecifier": {
+                    "type": "ListTypeSpecifier",
+                    "elementType": {
+                      "name": "{http://hl7.org/fhir}Consent",
+                      "type": "NamedTypeSpecifier"
+                    }
+                  },
+                  "type": "Retrieve",
+                  "dataType": "{http://hl7.org/fhir}Consent"
+                },
+                "type": "AliasedQuerySource",
+                "alias": "C"
+              }
+            ]
+          },
+          "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+        },
+        "name": "Cohort 1",
+        "type": "ExpressionDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean",
+        "context": "Patient"
+      },
+      {
+        "accessLevel": "Public",
+        "expression": {
+          "type": "Exists",
+          "operand": {
+            "resultTypeSpecifier": {
+              "type": "ListTypeSpecifier",
+              "elementType": {
+                "name": "{http://hl7.org/fhir}Consent",
+                "type": "NamedTypeSpecifier"
+              }
+            },
+            "where": {
+              "type": "Contains",
+              "operand": [
+                {
+                  "return": {
+                    "expression": {
+                      "name": "ToCode",
+                      "type": "FunctionRef",
+                      "libraryName": "FHIRHelpers",
+                      "operand": [
+                        {
+                          "name": "X",
+                          "type": "AliasRef"
+                        }
+                      ]
+                    },
+                    "type": "ReturnClause",
+                    "distinct": false
+                  },
+                  "type": "Query",
+                  "source": [
+                    {
+                      "expression": {
+                        "resultTypeSpecifier": {
+                          "type": "ListTypeSpecifier",
+                          "elementType": {
+                            "name": "{http://hl7.org/fhir}Coding",
+                            "type": "NamedTypeSpecifier"
+                          }
+                        },
+                        "type": "Flatten",
+                        "operand": {
+                          "where": {
+                            "type": "Not",
+                            "operand": {
+                              "type": "IsNull",
+                              "operand": {
+                                "path": "coding",
+                                "type": "Property",
+                                "source": {
+                                  "name": "$this",
+                                  "type": "AliasRef"
+                                }
+                              }
+                            }
+                          },
+                          "return": {
+                            "expression": {
+                              "path": "coding",
+                              "type": "Property",
+                              "source": {
+                                "name": "$this",
+                                "type": "AliasRef"
+                              }
+                            },
+                            "type": "ReturnClause",
+                            "distinct": false
+                          },
+                          "type": "Query",
+                          "source": [
+                            {
+                              "expression": {
+                                "resultTypeSpecifier": {
+                                  "type": "ListTypeSpecifier",
+                                  "elementType": {
+                                    "name": "{http://hl7.org/fhir}CodeableConcept",
+                                    "type": "NamedTypeSpecifier"
+                                  }
+                                },
+                                "type": "Flatten",
+                                "operand": {
+                                  "where": {
+                                    "type": "Not",
+                                    "operand": {
+                                      "type": "IsNull",
+                                      "operand": {
+                                        "path": "code",
+                                        "type": "Property",
+                                        "source": {
+                                          "name": "$this",
+                                          "type": "AliasRef"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "return": {
+                                    "expression": {
+                                      "path": "code",
+                                      "type": "Property",
+                                      "source": {
+                                        "name": "$this",
+                                        "type": "AliasRef"
+                                      }
+                                    },
+                                    "type": "ReturnClause",
+                                    "distinct": false
+                                  },
+                                  "type": "Query",
+                                  "source": [
+                                    {
+                                      "expression": {
+                                        "path": "provision",
+                                        "resultTypeSpecifier": {
+                                          "type": "ListTypeSpecifier",
+                                          "elementType": {
+                                            "name": "{http://hl7.org/fhir}Consent.Provision",
+                                            "type": "NamedTypeSpecifier"
+                                          }
+                                        },
+                                        "type": "Property",
+                                        "source": {
+                                          "path": "provision",
+                                          "type": "Property",
+                                          "scope": "C",
+                                          "resultTypeName": "{http://hl7.org/fhir}Consent.Provision"
+                                        }
+                                      },
+                                      "type": "AliasedQuerySource",
+                                      "alias": "$this"
+                                    }
+                                  ]
+                                }
+                              },
+                              "type": "AliasedQuerySource",
+                              "alias": "$this"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "AliasedQuerySource",
+                      "alias": "X"
+                    }
+                  ]
+                },
+                {
+                  "name": "KKDAT 5J retrospektiv wissenschaftlich nutzen",
+                  "type": "CodeRef",
+                  "resultTypeName": "{urn:hl7-org:elm-types:r1}Code"
+                }
+              ],
+              "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+            },
+            "relationship": [],
+            "type": "Query",
+            "source": [
+              {
+                "resultTypeSpecifier": {
+                  "type": "ListTypeSpecifier",
+                  "elementType": {
+                    "name": "{http://hl7.org/fhir}Consent",
+                    "type": "NamedTypeSpecifier"
+                  }
+                },
+                "expression": {
+                  "resultTypeSpecifier": {
+                    "type": "ListTypeSpecifier",
+                    "elementType": {
+                      "name": "{http://hl7.org/fhir}Consent",
+                      "type": "NamedTypeSpecifier"
+                    }
+                  },
+                  "type": "Retrieve",
+                  "dataType": "{http://hl7.org/fhir}Consent"
+                },
+                "type": "AliasedQuerySource",
+                "alias": "C"
+              }
+            ]
+          },
+          "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+        },
+        "name": "Cohort 2",
+        "type": "ExpressionDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean",
+        "context": "Patient"
+      },
+      {
+        "accessLevel": "Public",
+        "expression": {
+          "type": "First",
+          "source": {
+            "resultTypeSpecifier": {
+              "type": "ListTypeSpecifier",
+              "elementType": {
+                "name": "{http://hl7.org/fhir}string",
+                "type": "NamedTypeSpecifier"
+              }
+            },
+            "where": {
+              "type": "Not",
+              "operand": {
+                "type": "IsNull",
+                "operand": {
+                  "path": "value",
+                  "type": "Property",
+                  "source": {
+                    "name": "$this",
+                    "type": "AliasRef"
+                  }
+                }
+              }
+            },
+            "return": {
+              "expression": {
+                "path": "value",
+                "type": "Property",
+                "source": {
+                  "name": "$this",
+                  "type": "AliasRef"
+                }
+              },
+              "type": "ReturnClause",
+              "distinct": false
+            },
+            "type": "Query",
+            "source": [
+              {
+                "expression": {
+                  "resultTypeSpecifier": {
+                    "type": "ListTypeSpecifier",
+                    "elementType": {
+                      "name": "{http://hl7.org/fhir}Identifier",
+                      "type": "NamedTypeSpecifier"
+                    }
+                  },
+                  "where": {
+                    "type": "Not",
+                    "operand": {
+                      "type": "IsNull",
+                      "operand": {
+                        "path": "identifier",
+                        "type": "Property",
+                        "source": {
+                          "name": "$this",
+                          "type": "AliasRef"
+                        }
+                      }
+                    }
+                  },
+                  "return": {
+                    "expression": {
+                      "path": "identifier",
+                      "type": "Property",
+                      "source": {
+                        "name": "$this",
+                        "type": "AliasRef"
+                      }
+                    },
+                    "type": "ReturnClause",
+                    "distinct": false
+                  },
+                  "type": "Query",
+                  "source": [
+                    {
+                      "expression": {
+                        "resultTypeSpecifier": {
+                          "type": "ListTypeSpecifier",
+                          "elementType": {
+                            "name": "{http://hl7.org/fhir}Reference",
+                            "type": "NamedTypeSpecifier"
+                          }
+                        },
+                        "where": {
+                          "type": "Not",
+                          "operand": {
+                            "type": "IsNull",
+                            "operand": {
+                              "path": "assigner",
+                              "type": "Property",
+                              "source": {
+                                "name": "$this",
+                                "type": "AliasRef"
+                              }
+                            }
+                          }
+                        },
+                        "return": {
+                          "expression": {
+                            "path": "assigner",
+                            "type": "Property",
+                            "source": {
+                              "name": "$this",
+                              "type": "AliasRef"
+                            }
+                          },
+                          "type": "ReturnClause",
+                          "distinct": false
+                        },
+                        "type": "Query",
+                        "source": [
+                          {
+                            "expression": {
+                              "resultTypeSpecifier": {
+                                "type": "ListTypeSpecifier",
+                                "elementType": {
+                                  "name": "{http://hl7.org/fhir}Identifier",
+                                  "type": "NamedTypeSpecifier"
+                                }
+                              },
+                              "where": {
+                                "type": "Equivalent",
+                                "operand": [
+                                  {
+                                    "name": "ToConcept",
+                                    "type": "FunctionRef",
+                                    "libraryName": "FHIRHelpers",
+                                    "operand": [
+                                      {
+                                        "path": "type",
+                                        "type": "Property",
+                                        "scope": "$this",
+                                        "resultTypeName": "{http://hl7.org/fhir}CodeableConcept"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "ToConcept",
+                                    "operand": {
+                                      "system": {
+                                        "name": "IdentifierType",
+                                        "type": "CodeSystemRef",
+                                        "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem"
+                                      },
+                                      "type": "Code",
+                                      "resultTypeName": "{urn:hl7-org:elm-types:r1}Code",
+                                      "code": "GKV"
+                                    }
+                                  }
+                                ],
+                                "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+                              },
+                              "type": "Query",
+                              "source": [
+                                {
+                                  "expression": {
+                                    "path": "identifier",
+                                    "resultTypeSpecifier": {
+                                      "type": "ListTypeSpecifier",
+                                      "elementType": {
+                                        "name": "{http://hl7.org/fhir}Identifier",
+                                        "type": "NamedTypeSpecifier"
+                                      }
+                                    },
+                                    "type": "Property",
+                                    "source": {
+                                      "name": "Patient",
+                                      "type": "ExpressionRef",
+                                      "resultTypeName": "{http://hl7.org/fhir}Patient"
+                                    }
+                                  },
+                                  "type": "AliasedQuerySource",
+                                  "alias": "$this"
+                                }
+                              ]
+                            },
+                            "type": "AliasedQuerySource",
+                            "alias": "$this"
+                          }
+                        ]
+                      },
+                      "type": "AliasedQuerySource",
+                      "alias": "$this"
+                    }
+                  ]
+                },
+                "type": "AliasedQuerySource",
+                "alias": "$this"
+              }
+            ]
+          },
+          "resultTypeName": "{http://hl7.org/fhir}string"
+        },
+        "name": "IkNumber",
+        "type": "ExpressionDef",
+        "resultTypeName": "{http://hl7.org/fhir}string",
+        "context": "Patient"
+      },
+      {
+        "accessLevel": "Public",
+        "expression": {
+          "type": "Combine",
+          "source": {
+            "return": {
+              "expression": {
+                "name": "ToString",
+                "type": "FunctionRef",
+                "libraryName": "FHIRHelpers",
+                "operand": [
+                  {
+                    "name": "X",
+                    "type": "AliasRef"
+                  }
+                ]
+              },
+              "type": "ReturnClause",
+              "distinct": false
+            },
+            "type": "Query",
+            "source": [
+              {
+                "expression": {
+                  "resultTypeSpecifier": {
+                    "type": "ListTypeSpecifier",
+                    "elementType": {
+                      "name": "{http://hl7.org/fhir}code",
+                      "type": "NamedTypeSpecifier"
+                    }
+                  },
+                  "type": "Flatten",
+                  "operand": {
+                    "resultTypeSpecifier": {
+                      "type": "ListTypeSpecifier",
+                      "elementType": {
+                        "type": "ListTypeSpecifier",
+                        "elementType": {
+                          "name": "{http://hl7.org/fhir}code",
+                          "type": "NamedTypeSpecifier"
+                        }
+                      }
+                    },
+                    "return": {
+                      "resultTypeSpecifier": {
+                        "type": "ListTypeSpecifier",
+                        "elementType": {
+                          "type": "ListTypeSpecifier",
+                          "elementType": {
+                            "name": "{http://hl7.org/fhir}code",
+                            "type": "NamedTypeSpecifier"
+                          }
+                        }
+                      },
+                      "expression": {
+                        "resultTypeSpecifier": {
+                          "type": "ListTypeSpecifier",
+                          "elementType": {
+                            "name": "{http://hl7.org/fhir}code",
+                            "type": "NamedTypeSpecifier"
+                          }
+                        },
+                        "where": {
+                          "type": "Not",
+                          "operand": {
+                            "type": "IsNull",
+                            "operand": {
+                              "path": "code",
+                              "type": "Property",
+                              "source": {
+                                "name": "$this",
+                                "type": "AliasRef"
+                              }
+                            }
+                          }
+                        },
+                        "return": {
+                          "expression": {
+                            "path": "code",
+                            "type": "Property",
+                            "source": {
+                              "name": "$this",
+                              "type": "AliasRef"
+                            }
+                          },
+                          "type": "ReturnClause",
+                          "distinct": false
+                        },
+                        "type": "Query",
+                        "source": [
+                          {
+                            "expression": {
+                              "resultTypeSpecifier": {
+                                "type": "ListTypeSpecifier",
+                                "elementType": {
+                                  "name": "{http://hl7.org/fhir}Coding",
+                                  "type": "NamedTypeSpecifier"
+                                }
+                              },
+                              "where": {
+                                "type": "Equal",
+                                "operand": [
+                                  {
+                                    "name": "ToString",
+                                    "type": "FunctionRef",
+                                    "libraryName": "FHIRHelpers",
+                                    "operand": [
+                                      {
+                                        "path": "system",
+                                        "type": "Property",
+                                        "scope": "$this",
+                                        "resultTypeName": "{http://hl7.org/fhir}uri"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "valueType": "{urn:hl7-org:elm-types:r1}String",
+                                    "value": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+                                    "type": "Literal",
+                                    "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+                                  }
+                                ],
+                                "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+                              },
+                              "type": "Query",
+                              "source": [
+                                {
+                                  "expression": {
+                                    "path": "coding",
+                                    "resultTypeSpecifier": {
+                                      "type": "ListTypeSpecifier",
+                                      "elementType": {
+                                        "name": "{http://hl7.org/fhir}Coding",
+                                        "type": "NamedTypeSpecifier"
+                                      }
+                                    },
+                                    "type": "Property",
+                                    "source": {
+                                      "path": "serviceType",
+                                      "type": "Property",
+                                      "scope": "E",
+                                      "resultTypeName": "{http://hl7.org/fhir}CodeableConcept"
+                                    }
+                                  },
+                                  "type": "AliasedQuerySource",
+                                  "alias": "$this"
+                                }
+                              ]
+                            },
+                            "type": "AliasedQuerySource",
+                            "alias": "$this"
+                          }
+                        ]
+                      },
+                      "type": "ReturnClause"
+                    },
+                    "relationship": [],
+                    "type": "Query",
+                    "source": [
+                      {
+                        "resultTypeSpecifier": {
+                          "type": "ListTypeSpecifier",
+                          "elementType": {
+                            "name": "{http://hl7.org/fhir}Encounter",
+                            "type": "NamedTypeSpecifier"
+                          }
+                        },
+                        "expression": {
+                          "resultTypeSpecifier": {
+                            "type": "ListTypeSpecifier",
+                            "elementType": {
+                              "name": "{http://hl7.org/fhir}Encounter",
+                              "type": "NamedTypeSpecifier"
+                            }
+                          },
+                          "type": "Retrieve",
+                          "dataType": "{http://hl7.org/fhir}Encounter"
+                        },
+                        "type": "AliasedQuerySource",
+                        "alias": "E"
+                      }
+                    ]
+                  }
+                },
+                "type": "AliasedQuerySource",
+                "alias": "X"
+              }
+            ]
+          },
+          "resultTypeName": "{urn:hl7-org:elm-types:r1}String",
+          "separator": {
+            "valueType": "{urn:hl7-org:elm-types:r1}String",
+            "value": ",",
+            "type": "Literal",
+            "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+          }
+        },
+        "name": "DepartmentKey",
+        "type": "ExpressionDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}String",
+        "context": "Patient"
+      },
+      {
+        "accessLevel": "Public",
+        "expression": {
+          "path": "gender",
+          "type": "Property",
+          "source": {
+            "name": "Patient",
+            "type": "ExpressionRef",
+            "resultTypeName": "{http://hl7.org/fhir}Patient"
+          },
+          "resultTypeName": "{http://hl7.org/fhir}AdministrativeGender"
+        },
+        "name": "Gender",
+        "type": "ExpressionDef",
+        "resultTypeName": "{http://hl7.org/fhir}AdministrativeGender",
+        "context": "Patient"
+      },
+      {
+        "accessLevel": "Public",
+        "expression": {
+          "else": {
+            "valueType": "{urn:hl7-org:elm-types:r1}String",
+            "value": "unknown",
+            "type": "Literal",
+            "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+          },
+          "type": "Case",
+          "resultTypeName": "{urn:hl7-org:elm-types:r1}String",
+          "caseItem": [
+            {
+              "when": {
+                "type": "Less",
+                "operand": [
+                  {
+                    "precision": "Year",
+                    "type": "CalculateAge",
+                    "operand": {
+                      "path": "birthDate.value",
+                      "type": "Property",
+                      "source": {
+                        "name": "Patient",
+                        "type": "ExpressionRef"
+                      }
+                    },
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Integer"
+                  },
+                  {
+                    "valueType": "{urn:hl7-org:elm-types:r1}Integer",
+                    "value": "18",
+                    "type": "Literal",
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Integer"
+                  }
+                ],
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+              },
+              "type": "CaseItem",
+              "then": {
+                "valueType": "{urn:hl7-org:elm-types:r1}String",
+                "value": "<18J.",
+                "type": "Literal",
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+              }
+            },
+            {
+              "when": {
+                "type": "Less",
+                "operand": [
+                  {
+                    "precision": "Year",
+                    "type": "CalculateAge",
+                    "operand": {
+                      "path": "birthDate.value",
+                      "type": "Property",
+                      "source": {
+                        "name": "Patient",
+                        "type": "ExpressionRef"
+                      }
+                    },
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Integer"
+                  },
+                  {
+                    "valueType": "{urn:hl7-org:elm-types:r1}Integer",
+                    "value": "65",
+                    "type": "Literal",
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Integer"
+                  }
+                ],
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+              },
+              "type": "CaseItem",
+              "then": {
+                "valueType": "{urn:hl7-org:elm-types:r1}String",
+                "value": "18-64J.",
+                "type": "Literal",
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+              }
+            },
+            {
+              "when": {
+                "type": "Not",
+                "operand": {
+                  "type": "IsNull",
+                  "operand": {
+                    "precision": "Year",
+                    "type": "CalculateAge",
+                    "operand": {
+                      "path": "birthDate.value",
+                      "type": "Property",
+                      "source": {
+                        "name": "Patient",
+                        "type": "ExpressionRef"
+                      }
+                    },
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Integer"
+                  },
+                  "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+                },
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+              },
+              "type": "CaseItem",
+              "then": {
+                "valueType": "{urn:hl7-org:elm-types:r1}String",
+                "value": "65+J.",
+                "type": "Literal",
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+              }
+            }
+          ]
+        },
+        "name": "AgeClass",
+        "type": "ExpressionDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}String",
+        "context": "Patient"
+      }
+    ]
+  }
+}
