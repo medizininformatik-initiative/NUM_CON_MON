@@ -22,8 +22,8 @@ define IkNumber:
   Patient.identifier.where(type ~ Code 'GKV' from IdentifierType).assigner.identifier.value.first()
 
 define DepartmentKey:
-   First(from [Encounter] E
-     return E.serviceType.coding.where(system = 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel').code.first())
+   Combine(Flatten(from [Encounter] E
+     return E.serviceType.coding.where(system = 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel').code), ',')
 
 define Gender:
   Patient.gender
