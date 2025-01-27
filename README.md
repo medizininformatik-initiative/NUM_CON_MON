@@ -4,11 +4,23 @@ CQL Measure for the NUM-CON-MON project, including test data.
 
 ## Prerequisites
 
-### Babashka
+### Babashka (only for generating the test data)
 
 ```sh
 brew install borkdude/brew/babashka
 ```
+
+### Docker
+
+For running the test environment including Blaze.
+
+### blazectl
+
+For evaluating the measure. Can be downloaded [here](https://github.com/samply/blazectl). Measures can also be executed manually via FHIR API and $evaluate-measure FHIR Operation. blazectl just uses that FHIR API.
+
+### jq
+
+For creating the CSV files.
 
 ## Run Blaze
 
