@@ -4,6 +4,7 @@ include FHIRHelpers version '4.0.0'
 
 codesystem consent: 'urn:oid:2.16.840.1.113883.3.1937.777.24.5.3'
 codesystem IdentifierType: 'http://fhir.de/CodeSystem/identifier-type-de-basis'
+codesystem Kontaktebene: 'http://fhir.de/CodeSystem/Kontaktebene'
 
 code "MDAT wissenschaftlich nutzen EU DSGVO NIVEAU": '2.16.840.1.113883.3.1937.777.24.5.3.8' from consent
 code "KKDAT 5J retrospektiv wissenschaftlich nutzen": '2.16.840.1.113883.3.1937.777.24.5.3.13' from consent
@@ -21,9 +22,14 @@ define "Cohort 2":
 define IkNumber:
   Patient.identifier.where(type ~ Code 'GKV' from IdentifierType).assigner.identifier.value.first()
 
+define Encounters:
+  from [Encounter: Code 'abteilungskontakt' from Kontaktebene] E
+     where E.status = 'finished' or E.status = 'in-progress'
+     sort by period.start
+
 define DepartmentKey:
-   Combine(Flatten(from [Encounter] E
-     return E.serviceType.coding.where(system = 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel').code), ',')
+   First(Flatten(from Encounters E
+     return E.serviceType.coding.where(system = 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel').code))
 
 define Gender:
   Patient.gender

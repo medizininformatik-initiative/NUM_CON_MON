@@ -37,14 +37,22 @@
         [{:system "urn:oid:2.16.840.1.113883.3.1937.777.24.5.3"
           :code code}]}]}]}})
 
-(defn encounter-resource [{:keys [id department-key patient-id]}]
-  {:resourceType "Encounter"
-   :id id
-   :serviceType
-   {:coding
-    [{:system "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel"
-      :code department-key}]}
-   :subject {:reference (str "Patient/" patient-id)}})
+(defn encounter-resource
+  [{:keys [id status type department-key patient-id start-date-time]}]
+  (cond->
+   {:resourceType "Encounter"
+    :id id
+    :status status
+    :type
+    [{:coding
+      [{:system "http://fhir.de/CodeSystem/Kontaktebene"
+        :code type}]}]
+    :serviceType
+    {:coding
+     [{:system "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel"
+       :code department-key}]}
+    :subject {:reference (str "Patient/" patient-id)}}
+    start-date-time (assoc :period {:start start-date-time})))
 
 (defn patient-bundle
   [{{patient-id :id :as patient} :patient :keys [consent encounter]}]
@@ -200,12 +208,23 @@
    "2425"
    "3700"])
 
+(defn rand-date-time []
+  (format "%s-%02d-%02d" (- 2025 (rand-int 100)) (inc (rand-int 12)) (inc (rand-int 28))))
+
 (defn gen-encounter-data [patient-id]
   (map-indexed
    #(assoc %2 :id (str patient-id "-" %1))
-   (for [department-key (repeatedly 2 #(rand-nth department-keys))]
-     {:department-key department-key
-      :patient-id patient-id})))
+   (for [status (repeatedly 2 #(rand-nth ["planned" "in-progress" "onleave" "finished" "cancelled" "entered-in-error" "unknown"]))
+         type (repeatedly 2 #(rand-nth ["einrichtungskontakt" "abteilungskontakt" "versorgungsstellenkontakt"]))
+         department-key (repeatedly 2 #(rand-nth department-keys))
+         start-date-time (repeatedly 2 #(rand-date-time))]
+     (cond->
+      {:status status
+       :type type
+       :department-key department-key
+       :patient-id patient-id}
+       (#{"in-progress" "finished"} status)
+       (assoc :start-date-time start-date-time)))))
 
 (defn gen-data []
   (for [{patient-id :id :as patient} (gen-patient-data)]
