@@ -2,6 +2,12 @@
 
 CQL Measure for the NUM-CON-MON project, including test data.
 
+# Deployment
+
+Steps for Deployment are described [here](DEPLOYMENT.md).
+
+# Test
+
 ## Prerequisites
 
 ### Babashka (only for generating the test data)

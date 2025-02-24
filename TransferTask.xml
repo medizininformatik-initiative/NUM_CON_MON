@@ -1,0 +1,61 @@
+<Task xmlns="http://hl7.org/fhir">
+    <meta>
+        <profile value="http://medizininformatik-initiative.de/fhir/StructureDefinition/task-data-send-start|1.0" />
+    </meta>
+    <instantiatesCanonical value="http://medizininformatik-initiative.de/bpe/Process/dataSend|1.0"/>
+    <status value="requested" />
+    <intent value="order" />
+    <authoredOn value="2022-11-16T11:00:00+01:00" />
+    <requester>
+        <type value="Organization" />
+        <identifier>
+            <system value="<dic-identifier-system>" />
+            <value value="<dic-identifier-value>" />
+        </identifier>
+    </requester>
+    <restriction>
+        <recipient>
+            <type value="Organization" />
+            <identifier>
+                <system value="<dic-identifier-system>" />
+                <value value="<dic-identifier-value>" />
+            </identifier>
+        </recipient>
+    </restriction>
+    <input>
+        <type>
+            <coding>
+                <system value="http://dsf.dev/fhir/CodeSystem/bpmn-message" />
+                <code value="message-name" />
+            </coding>
+        </type>
+        <valueString value="dataSendStart" />
+    </input>
+    <input>
+        <type>
+            <coding>
+                <system value="http://medizininformatik-initiative.de/fhir/CodeSystem/data-transfer" />
+                <code value="hrp-identifier" />
+            </coding>
+        </type>
+        <valueReference>
+            <type value="Organization" />
+            <identifier>
+                <system value="<hrp-identifier-system>" />
+                <value value="<hrp-identifier-value>" />
+            </identifier>
+        </valueReference>
+    </input>
+    <input>
+        <type>
+            <coding>
+                <system value="http://medizininformatik-initiative.de/fhir/CodeSystem/data-transfer" />
+                <code value="project-identifier" />
+            </coding>
+        </type>
+        <valueIdentifier>
+            <system value="http://medizininformatik-initiative.de/sid/project-identifier" />
+            <value value="num-con-mon" />
+        </valueIdentifier>
+    </input>
+</Task>
