@@ -7,22 +7,22 @@
 (defn patient-resource [{:keys [id ik-number gender birthDate]}]
   (cond->
    {:resourceType "Patient"
-   :id id
-   :identifier
-   [{:type
-     {:coding
-      [{:system "http://fhir.de/CodeSystem/identifier-type-de-basis"
-        :code "GKV"}]}
-     :system "http://fhir.de/sid/gkv/kvid-10"
-     :value "123456"
-     :assigner
-     {:identifier
-      {:type
-       {:coding
-        [{:system "http://terminology.hl7.org/CodeSystem/v2-0203"
-          :code "XX"}]}
-       :system "http://fhir.de/sid/arge-ik/iknr"
-       :value ik-number}}}]}
+    :id id
+    :identifier
+    [{:type
+      {:coding
+       [{:system "http://fhir.de/CodeSystem/identifier-type-de-basis"
+         :code (rand-nth (into ["GKV"] (repeat 9 "KVZ10")))}]}
+      :system "http://fhir.de/sid/gkv/kvid-10"
+      :value "123456"
+      :assigner
+      {:identifier
+       {:type
+        {:coding
+         [{:system "http://terminology.hl7.org/CodeSystem/v2-0203"
+           :code "XX"}]}
+        :system "http://fhir.de/sid/arge-ik/iknr"
+        :value ik-number}}}]}
     gender (assoc :gender gender)
     birthDate (assoc :birthDate birthDate)))
 
