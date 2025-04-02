@@ -17,21 +17,25 @@ define "Cohort 1":
   exists (from [Consent] C
     where C.provision.provision.code.coding contains "MDAT wissenschaftlich nutzen EU DSGVO NIVEAU")
 
+define Consent:
+  from [Consent] C
+    where C.provision.provision.code.coding contains "KKDAT 5J retrospektiv wissenschaftlich nutzen"
+
 define "Cohort 2":
-  exists (from [Consent] C
-    where C.provision.provision.code.coding contains "KKDAT 5J retrospektiv wissenschaftlich nutzen")
+  exists (Consent)
 
 define IkNumber:
   Patient.identifier.where(type ~ KVZ10 or type ~ GKV).assigner.identifier.value.first()
 
 define Encounters:
   from [Encounter: Code 'abteilungskontakt' from Kontaktebene] E
-     where E.status = 'finished' or E.status = 'in-progress'
-     sort by period.start
+    with Consent C
+      such that Abs(months between E.period.start and C.dateTime) <= 2
+    where E.status = 'finished' or E.status = 'in-progress'
+    sort by period.start
 
 define DepartmentKey:
-   First(Flatten(from Encounters E
-     return E.serviceType.coding.where(system = 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel').code))
+   First(First(Encounters).serviceType.coding.where(system = 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel').code)
 
 define Gender:
   Patient.gender
