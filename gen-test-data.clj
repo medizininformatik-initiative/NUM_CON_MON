@@ -26,10 +26,11 @@
     gender (assoc :gender gender)
     birthDate (assoc :birthDate birthDate)))
 
-(defn consent-resource [{:keys [id patient-id code]}]
+(defn consent-resource [{:keys [id patient-id date code]}]
   {:resourceType "Consent"
    :id id
    :patient {:reference (str "Patient/" patient-id)}
+   :dateTime date
    :provision
    {:provision
     [{:code
@@ -161,9 +162,13 @@
       :gender gender
       :birthDate (some-> birthDate str)})))
 
+(defn rand-date-time []
+  (format "%s-%02d-%02d" (- 2025 (rand-int 100)) (inc (rand-int 12)) (inc (rand-int 28))))
+
 (defn gen-consent-data [patient-id]
   {:id patient-id
    :patient-id patient-id
+   :date (rand-date-time)
    :code (rand-nth ["2.16.840.1.113883.3.1937.777.24.5.3.8"
                     "2.16.840.1.113883.3.1937.777.24.5.3.13"])})
 
@@ -207,9 +212,6 @@
    "2316"
    "2425"
    "3700"])
-
-(defn rand-date-time []
-  (format "%s-%02d-%02d" (- 2025 (rand-int 100)) (inc (rand-int 12)) (inc (rand-int 28))))
 
 (defn gen-encounter-data [patient-id]
   (map-indexed
