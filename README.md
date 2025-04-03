@@ -55,7 +55,7 @@ docker compose up -d
 ## Upload MeasureReport
 
 ```sh
-./send-report.sh report.json http://localhost:8080/fhir
+./send-report.sh report-de-identified.json http://localhost:8080/fhir
 ```
 
 ## Shutdown and Clear Data

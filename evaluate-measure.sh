@@ -11,21 +11,21 @@ fi
 REPORT=$(blazectl --server "$BASE" evaluate-measure num-con-mon.yml | ./de-identify.sh | tee report-de-identified.json)
 
 echo
-echo "Finished generating the MeasureReport saved under: report.json"
+echo "Finished generating the MeasureReport saved under: report-de-identified.json"
 echo
 echo "Anzahl Patienten Kohorte 1: $(echo "$REPORT" | jq '.group[0].population[0].count')"
 echo "Anzahl Patienten Kohorte 2: $(echo "$REPORT" | jq '.group[1].population[0].count')"
 echo
 echo "Aufschlüsselung für Kohorte 2:"
 echo
-echo "Liste prozentualer Anteile der Kassenzugehörigkeit je Standort:"
+echo "Liste absoluter Anzahlen der Kassenzugehörigkeit je Standort:"
 echo "$REPORT" | jq -rf ik-number.jq | tee ik-number.csv
 echo
-echo "Liste prozentualen Anteil der Fachabteilungen:"
+echo "Liste absoluter Anzahlen der Fachabteilungen:"
 echo "$REPORT" | jq -rf department-key.jq | tee department-key.csv
 echo
-echo "Liste prozentualer Anteile der Geschlechter (männlich, weiblich):"
+echo "Liste absoluter Anzahlen der Geschlechter (männlich, weiblich):"
 echo "$REPORT" | jq -rf gender.jq | tee gender.csv
 echo
-echo "Liste prozentualer Anteile der Altersgruppen (<18J., 18-64J. und 65+J.):"
+echo "Liste absoluter Anzahlen der Altersgruppen (<18J., 18-64J. und 65+J.):"
 echo "$REPORT" | jq -rf age-class.jq | tee age-class.csv
