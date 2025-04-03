@@ -9,7 +9,7 @@
 
 ## 1. Evaluate NUM_CON_MON on FHIR Server
 
-Evaluate a [Measure](num-con-mon.yml) against the resources of the given FHIR server. The resulting MeasureReport is saved as `report.json`.
+Evaluate a [Measure](num-con-mon.yml) against the resources of the given FHIR server. The resulting MeasureReport is saved as `report-de-identified.json`.
 
 ```sh
 ./evaluate-measure.sh <your-fhir-server>
@@ -26,7 +26,7 @@ DocumentReference will be updated to point to the new MeasureReport. Any previou
 deleted and will be kept on your FHIR Server.
 
 ```sh
-./send-report.sh report.json <your-dsf-fhir-server>
+./send-report.sh report-de-identified.json <your-dsf-fhir-server>
 ```
 
 ```
