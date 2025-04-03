@@ -8,7 +8,7 @@ then
     exit 1
 fi
 
-REPORT=$(blazectl --server "$BASE" evaluate-measure num-con-mon.yml | tee report.json)
+REPORT=$(blazectl --server "$BASE" evaluate-measure num-con-mon.yml | ./de-identify.sh | tee report-de-identified.json)
 
 echo
 echo "Finished generating the MeasureReport saved under: report.json"
