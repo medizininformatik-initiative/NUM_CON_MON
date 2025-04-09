@@ -23,7 +23,14 @@
            :code "XX"}]}
         :system "http://fhir.de/sid/arge-ik/iknr"
         :value ik-number}}}]}
-    gender (assoc :gender gender)
+    (#{"male" "female"} gender) (assoc :gender gender)
+    (#{"D" "X"} gender)
+    (assoc :gender "other"
+           :_gender {:extension
+                     [{:url "http://fhir.de/StructureDefinition/gender-amtlich-de"
+                       :valueCoding
+                       {:system "http://fhir.de/CodeSystem/gender-amtlich-de"
+                        :code gender}}]})
     birthDate (assoc :birthDate birthDate)))
 
 (defn consent-resource [{:keys [id patient-id date code]}]
@@ -156,7 +163,7 @@
   (map-indexed
    #(assoc %2 :id (str %1))
    (for [ik-number (take 10 ik-numbers)
-         gender [nil "male" "female"]
+         gender [nil "male" "female" "D" "X"]
          birthDate (cons nil (range 1950 2020))]
      {:ik-number ik-number
       :gender gender

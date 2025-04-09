@@ -38,12 +38,19 @@ define DepartmentKey:
    First(First(Encounters).serviceType.coding.where(system = 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel').code)
 
 define Gender:
-  Patient.gender
+  if Patient.gender = 'other' then
+    case
+      when Patient.gender.extension.where(url = 'http://fhir.de/StructureDefinition/gender-amtlich-de').value.code = 'D' then 'divers'
+      when Patient.gender.extension.where(url = 'http://fhir.de/StructureDefinition/gender-amtlich-de').value.code = 'X' then 'unbestimmt'
+      else 'other'
+    end
+  else
+    Patient.gender
 
 define AgeClass:
   case
-  when AgeInYears() < 18 then '<18J.'
-  when AgeInYears() < 65 then '18-64J.'
-  when AgeInYears() is not null then '65+J.'
-  else 'unknown'
+    when AgeInYears() < 18 then '<18J.'
+    when AgeInYears() < 65 then '18-64J.'
+    when AgeInYears() is not null then '65+J.'
+    else 'unknown'
   end
