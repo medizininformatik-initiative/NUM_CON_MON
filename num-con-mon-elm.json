@@ -15,6 +15,13 @@
         "type": "CodeSystemDef",
         "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem",
         "id": "http://fhir.de/CodeSystem/identifier-type-de-basis"
+      },
+      {
+        "accessLevel": "Public",
+        "name": "Kontaktebene",
+        "type": "CodeSystemDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem",
+        "id": "http://fhir.de/CodeSystem/Kontaktebene"
       }
     ]
   },
@@ -65,6 +72,30 @@
           "type": "CodeSystemRef",
           "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem"
         }
+      },
+      {
+        "accessLevel": "Public",
+        "name": "KVZ10",
+        "type": "CodeDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}Code",
+        "id": "KVZ10",
+        "codeSystem": {
+          "name": "IdentifierType",
+          "type": "CodeSystemRef",
+          "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem"
+        }
+      },
+      {
+        "accessLevel": "Public",
+        "name": "GKV",
+        "type": "CodeDef",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}Code",
+        "id": "GKV",
+        "codeSystem": {
+          "name": "IdentifierType",
+          "type": "CodeSystemRef",
+          "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem"
+        }
       }
     ]
   },
@@ -98,6 +129,34 @@
       "translatorVersion": "2.11.0",
       "type": "CqlToElmInfo",
       "translatorOptions": "EnableResultTypes"
+    },
+    {
+      "errorSeverity": "warning",
+      "type": "CqlToElmError",
+      "errorType": "semantic",
+      "message": "List-valued expression was demoted to a singleton."
+    },
+    {
+      "libraryId": "num-con-mon",
+      "startLine": 43,
+      "errorSeverity": "warning",
+      "type": "CqlToElmError",
+      "errorType": "semantic",
+      "endLine": 43,
+      "startChar": 111,
+      "endChar": 114,
+      "message": "List-valued expression was demoted to a singleton."
+    },
+    {
+      "libraryId": "num-con-mon",
+      "startLine": 44,
+      "errorSeverity": "warning",
+      "type": "CqlToElmError",
+      "errorType": "semantic",
+      "endLine": 44,
+      "startChar": 111,
+      "endChar": 114,
+      "message": "List-valued expression was demoted to a singleton."
     }
   ],
   "statements": {
@@ -305,6 +364,196 @@
       },
       {
         "accessLevel": "Public",
+        "resultTypeSpecifier": {
+          "type": "ListTypeSpecifier",
+          "elementType": {
+            "name": "{http://hl7.org/fhir}Consent",
+            "type": "NamedTypeSpecifier"
+          }
+        },
+        "expression": {
+          "resultTypeSpecifier": {
+            "type": "ListTypeSpecifier",
+            "elementType": {
+              "name": "{http://hl7.org/fhir}Consent",
+              "type": "NamedTypeSpecifier"
+            }
+          },
+          "where": {
+            "type": "Contains",
+            "operand": [
+              {
+                "return": {
+                  "expression": {
+                    "name": "ToCode",
+                    "type": "FunctionRef",
+                    "libraryName": "FHIRHelpers",
+                    "operand": [
+                      {
+                        "name": "X",
+                        "type": "AliasRef"
+                      }
+                    ]
+                  },
+                  "type": "ReturnClause",
+                  "distinct": false
+                },
+                "type": "Query",
+                "source": [
+                  {
+                    "expression": {
+                      "resultTypeSpecifier": {
+                        "type": "ListTypeSpecifier",
+                        "elementType": {
+                          "name": "{http://hl7.org/fhir}Coding",
+                          "type": "NamedTypeSpecifier"
+                        }
+                      },
+                      "type": "Flatten",
+                      "operand": {
+                        "where": {
+                          "type": "Not",
+                          "operand": {
+                            "type": "IsNull",
+                            "operand": {
+                              "path": "coding",
+                              "type": "Property",
+                              "source": {
+                                "name": "$this",
+                                "type": "AliasRef"
+                              }
+                            }
+                          }
+                        },
+                        "return": {
+                          "expression": {
+                            "path": "coding",
+                            "type": "Property",
+                            "source": {
+                              "name": "$this",
+                              "type": "AliasRef"
+                            }
+                          },
+                          "type": "ReturnClause",
+                          "distinct": false
+                        },
+                        "type": "Query",
+                        "source": [
+                          {
+                            "expression": {
+                              "resultTypeSpecifier": {
+                                "type": "ListTypeSpecifier",
+                                "elementType": {
+                                  "name": "{http://hl7.org/fhir}CodeableConcept",
+                                  "type": "NamedTypeSpecifier"
+                                }
+                              },
+                              "type": "Flatten",
+                              "operand": {
+                                "where": {
+                                  "type": "Not",
+                                  "operand": {
+                                    "type": "IsNull",
+                                    "operand": {
+                                      "path": "code",
+                                      "type": "Property",
+                                      "source": {
+                                        "name": "$this",
+                                        "type": "AliasRef"
+                                      }
+                                    }
+                                  }
+                                },
+                                "return": {
+                                  "expression": {
+                                    "path": "code",
+                                    "type": "Property",
+                                    "source": {
+                                      "name": "$this",
+                                      "type": "AliasRef"
+                                    }
+                                  },
+                                  "type": "ReturnClause",
+                                  "distinct": false
+                                },
+                                "type": "Query",
+                                "source": [
+                                  {
+                                    "expression": {
+                                      "path": "provision",
+                                      "resultTypeSpecifier": {
+                                        "type": "ListTypeSpecifier",
+                                        "elementType": {
+                                          "name": "{http://hl7.org/fhir}Consent.Provision",
+                                          "type": "NamedTypeSpecifier"
+                                        }
+                                      },
+                                      "type": "Property",
+                                      "source": {
+                                        "path": "provision",
+                                        "type": "Property",
+                                        "scope": "C",
+                                        "resultTypeName": "{http://hl7.org/fhir}Consent.Provision"
+                                      }
+                                    },
+                                    "type": "AliasedQuerySource",
+                                    "alias": "$this"
+                                  }
+                                ]
+                              }
+                            },
+                            "type": "AliasedQuerySource",
+                            "alias": "$this"
+                          }
+                        ]
+                      }
+                    },
+                    "type": "AliasedQuerySource",
+                    "alias": "X"
+                  }
+                ]
+              },
+              {
+                "name": "KKDAT 5J retrospektiv wissenschaftlich nutzen",
+                "type": "CodeRef",
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}Code"
+              }
+            ],
+            "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+          },
+          "relationship": [],
+          "type": "Query",
+          "source": [
+            {
+              "resultTypeSpecifier": {
+                "type": "ListTypeSpecifier",
+                "elementType": {
+                  "name": "{http://hl7.org/fhir}Consent",
+                  "type": "NamedTypeSpecifier"
+                }
+              },
+              "expression": {
+                "resultTypeSpecifier": {
+                  "type": "ListTypeSpecifier",
+                  "elementType": {
+                    "name": "{http://hl7.org/fhir}Consent",
+                    "type": "NamedTypeSpecifier"
+                  }
+                },
+                "type": "Retrieve",
+                "dataType": "{http://hl7.org/fhir}Consent"
+              },
+              "type": "AliasedQuerySource",
+              "alias": "C"
+            }
+          ]
+        },
+        "name": "Consent",
+        "type": "ExpressionDef",
+        "context": "Patient"
+      },
+      {
+        "accessLevel": "Public",
         "expression": {
           "type": "Exists",
           "operand": {
@@ -315,174 +564,8 @@
                 "type": "NamedTypeSpecifier"
               }
             },
-            "where": {
-              "type": "Contains",
-              "operand": [
-                {
-                  "return": {
-                    "expression": {
-                      "name": "ToCode",
-                      "type": "FunctionRef",
-                      "libraryName": "FHIRHelpers",
-                      "operand": [
-                        {
-                          "name": "X",
-                          "type": "AliasRef"
-                        }
-                      ]
-                    },
-                    "type": "ReturnClause",
-                    "distinct": false
-                  },
-                  "type": "Query",
-                  "source": [
-                    {
-                      "expression": {
-                        "resultTypeSpecifier": {
-                          "type": "ListTypeSpecifier",
-                          "elementType": {
-                            "name": "{http://hl7.org/fhir}Coding",
-                            "type": "NamedTypeSpecifier"
-                          }
-                        },
-                        "type": "Flatten",
-                        "operand": {
-                          "where": {
-                            "type": "Not",
-                            "operand": {
-                              "type": "IsNull",
-                              "operand": {
-                                "path": "coding",
-                                "type": "Property",
-                                "source": {
-                                  "name": "$this",
-                                  "type": "AliasRef"
-                                }
-                              }
-                            }
-                          },
-                          "return": {
-                            "expression": {
-                              "path": "coding",
-                              "type": "Property",
-                              "source": {
-                                "name": "$this",
-                                "type": "AliasRef"
-                              }
-                            },
-                            "type": "ReturnClause",
-                            "distinct": false
-                          },
-                          "type": "Query",
-                          "source": [
-                            {
-                              "expression": {
-                                "resultTypeSpecifier": {
-                                  "type": "ListTypeSpecifier",
-                                  "elementType": {
-                                    "name": "{http://hl7.org/fhir}CodeableConcept",
-                                    "type": "NamedTypeSpecifier"
-                                  }
-                                },
-                                "type": "Flatten",
-                                "operand": {
-                                  "where": {
-                                    "type": "Not",
-                                    "operand": {
-                                      "type": "IsNull",
-                                      "operand": {
-                                        "path": "code",
-                                        "type": "Property",
-                                        "source": {
-                                          "name": "$this",
-                                          "type": "AliasRef"
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "return": {
-                                    "expression": {
-                                      "path": "code",
-                                      "type": "Property",
-                                      "source": {
-                                        "name": "$this",
-                                        "type": "AliasRef"
-                                      }
-                                    },
-                                    "type": "ReturnClause",
-                                    "distinct": false
-                                  },
-                                  "type": "Query",
-                                  "source": [
-                                    {
-                                      "expression": {
-                                        "path": "provision",
-                                        "resultTypeSpecifier": {
-                                          "type": "ListTypeSpecifier",
-                                          "elementType": {
-                                            "name": "{http://hl7.org/fhir}Consent.Provision",
-                                            "type": "NamedTypeSpecifier"
-                                          }
-                                        },
-                                        "type": "Property",
-                                        "source": {
-                                          "path": "provision",
-                                          "type": "Property",
-                                          "scope": "C",
-                                          "resultTypeName": "{http://hl7.org/fhir}Consent.Provision"
-                                        }
-                                      },
-                                      "type": "AliasedQuerySource",
-                                      "alias": "$this"
-                                    }
-                                  ]
-                                }
-                              },
-                              "type": "AliasedQuerySource",
-                              "alias": "$this"
-                            }
-                          ]
-                        }
-                      },
-                      "type": "AliasedQuerySource",
-                      "alias": "X"
-                    }
-                  ]
-                },
-                {
-                  "name": "KKDAT 5J retrospektiv wissenschaftlich nutzen",
-                  "type": "CodeRef",
-                  "resultTypeName": "{urn:hl7-org:elm-types:r1}Code"
-                }
-              ],
-              "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
-            },
-            "relationship": [],
-            "type": "Query",
-            "source": [
-              {
-                "resultTypeSpecifier": {
-                  "type": "ListTypeSpecifier",
-                  "elementType": {
-                    "name": "{http://hl7.org/fhir}Consent",
-                    "type": "NamedTypeSpecifier"
-                  }
-                },
-                "expression": {
-                  "resultTypeSpecifier": {
-                    "type": "ListTypeSpecifier",
-                    "elementType": {
-                      "name": "{http://hl7.org/fhir}Consent",
-                      "type": "NamedTypeSpecifier"
-                    }
-                  },
-                  "type": "Retrieve",
-                  "dataType": "{http://hl7.org/fhir}Consent"
-                },
-                "type": "AliasedQuerySource",
-                "alias": "C"
-              }
-            ]
+            "name": "Consent",
+            "type": "ExpressionRef"
           },
           "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
         },
@@ -615,33 +698,61 @@
                                 }
                               },
                               "where": {
-                                "type": "Equivalent",
+                                "type": "Or",
                                 "operand": [
                                   {
-                                    "name": "ToConcept",
-                                    "type": "FunctionRef",
-                                    "libraryName": "FHIRHelpers",
+                                    "type": "Equivalent",
                                     "operand": [
                                       {
-                                        "path": "type",
-                                        "type": "Property",
-                                        "scope": "$this",
-                                        "resultTypeName": "{http://hl7.org/fhir}CodeableConcept"
+                                        "name": "ToConcept",
+                                        "type": "FunctionRef",
+                                        "libraryName": "FHIRHelpers",
+                                        "operand": [
+                                          {
+                                            "path": "type",
+                                            "type": "Property",
+                                            "scope": "$this",
+                                            "resultTypeName": "{http://hl7.org/fhir}CodeableConcept"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "ToConcept",
+                                        "operand": {
+                                          "name": "KVZ10",
+                                          "type": "CodeRef",
+                                          "resultTypeName": "{urn:hl7-org:elm-types:r1}Code"
+                                        }
                                       }
-                                    ]
+                                    ],
+                                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
                                   },
                                   {
-                                    "type": "ToConcept",
-                                    "operand": {
-                                      "system": {
-                                        "name": "IdentifierType",
-                                        "type": "CodeSystemRef",
-                                        "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem"
+                                    "type": "Equivalent",
+                                    "operand": [
+                                      {
+                                        "name": "ToConcept",
+                                        "type": "FunctionRef",
+                                        "libraryName": "FHIRHelpers",
+                                        "operand": [
+                                          {
+                                            "path": "type",
+                                            "type": "Property",
+                                            "scope": "$this",
+                                            "resultTypeName": "{http://hl7.org/fhir}CodeableConcept"
+                                          }
+                                        ]
                                       },
-                                      "type": "Code",
-                                      "resultTypeName": "{urn:hl7-org:elm-types:r1}Code",
-                                      "code": "GKV"
-                                    }
+                                      {
+                                        "type": "ToConcept",
+                                        "operand": {
+                                          "name": "GKV",
+                                          "type": "CodeRef",
+                                          "resultTypeName": "{urn:hl7-org:elm-types:r1}Code"
+                                        }
+                                      }
+                                    ],
+                                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
                                   }
                                 ],
                                 "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
@@ -694,20 +805,254 @@
       },
       {
         "accessLevel": "Public",
+        "resultTypeSpecifier": {
+          "type": "ListTypeSpecifier",
+          "elementType": {
+            "name": "{http://hl7.org/fhir}Encounter",
+            "type": "NamedTypeSpecifier"
+          }
+        },
         "expression": {
-          "type": "Combine",
-          "source": {
-            "return": {
-              "expression": {
-                "name": "ToString",
-                "type": "FunctionRef",
-                "libraryName": "FHIRHelpers",
+          "resultTypeSpecifier": {
+            "type": "ListTypeSpecifier",
+            "elementType": {
+              "name": "{http://hl7.org/fhir}Encounter",
+              "type": "NamedTypeSpecifier"
+            }
+          },
+          "where": {
+            "type": "Or",
+            "operand": [
+              {
+                "type": "Equal",
                 "operand": [
                   {
-                    "name": "X",
+                    "name": "ToString",
+                    "type": "FunctionRef",
+                    "libraryName": "FHIRHelpers",
+                    "operand": [
+                      {
+                        "path": "status",
+                        "type": "Property",
+                        "scope": "E",
+                        "resultTypeName": "{http://hl7.org/fhir}EncounterStatus"
+                      }
+                    ]
+                  },
+                  {
+                    "valueType": "{urn:hl7-org:elm-types:r1}String",
+                    "value": "finished",
+                    "type": "Literal",
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+                  }
+                ],
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+              },
+              {
+                "type": "Equal",
+                "operand": [
+                  {
+                    "name": "ToString",
+                    "type": "FunctionRef",
+                    "libraryName": "FHIRHelpers",
+                    "operand": [
+                      {
+                        "path": "status",
+                        "type": "Property",
+                        "scope": "E",
+                        "resultTypeName": "{http://hl7.org/fhir}EncounterStatus"
+                      }
+                    ]
+                  },
+                  {
+                    "valueType": "{urn:hl7-org:elm-types:r1}String",
+                    "value": "in-progress",
+                    "type": "Literal",
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+                  }
+                ],
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+              }
+            ],
+            "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+          },
+          "relationship": [
+            {
+              "resultTypeSpecifier": {
+                "type": "ListTypeSpecifier",
+                "elementType": {
+                  "name": "{http://hl7.org/fhir}Consent",
+                  "type": "NamedTypeSpecifier"
+                }
+              },
+              "expression": {
+                "resultTypeSpecifier": {
+                  "type": "ListTypeSpecifier",
+                  "elementType": {
+                    "name": "{http://hl7.org/fhir}Consent",
+                    "type": "NamedTypeSpecifier"
+                  }
+                },
+                "name": "Consent",
+                "type": "ExpressionRef"
+              },
+              "type": "With",
+              "alias": "C",
+              "suchThat": {
+                "type": "LessOrEqual",
+                "operand": [
+                  {
+                    "type": "Abs",
+                    "operand": {
+                      "precision": "Month",
+                      "type": "DurationBetween",
+                      "operand": [
+                        {
+                          "name": "ToDateTime",
+                          "type": "FunctionRef",
+                          "libraryName": "FHIRHelpers",
+                          "operand": [
+                            {
+                              "path": "start",
+                              "type": "Property",
+                              "source": {
+                                "path": "period",
+                                "type": "Property",
+                                "scope": "E",
+                                "resultTypeName": "{http://hl7.org/fhir}Period"
+                              },
+                              "resultTypeName": "{http://hl7.org/fhir}dateTime"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "ToDateTime",
+                          "type": "FunctionRef",
+                          "libraryName": "FHIRHelpers",
+                          "operand": [
+                            {
+                              "path": "dateTime",
+                              "type": "Property",
+                              "scope": "C",
+                              "resultTypeName": "{http://hl7.org/fhir}dateTime"
+                            }
+                          ]
+                        }
+                      ],
+                      "resultTypeName": "{urn:hl7-org:elm-types:r1}Integer"
+                    },
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Integer"
+                  },
+                  {
+                    "valueType": "{urn:hl7-org:elm-types:r1}Integer",
+                    "value": "2",
+                    "type": "Literal",
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Integer"
+                  }
+                ],
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+              }
+            }
+          ],
+          "type": "Query",
+          "source": [
+            {
+              "resultTypeSpecifier": {
+                "type": "ListTypeSpecifier",
+                "elementType": {
+                  "name": "{http://hl7.org/fhir}Encounter",
+                  "type": "NamedTypeSpecifier"
+                }
+              },
+              "expression": {
+                "resultTypeSpecifier": {
+                  "type": "ListTypeSpecifier",
+                  "elementType": {
+                    "name": "{http://hl7.org/fhir}Encounter",
+                    "type": "NamedTypeSpecifier"
+                  }
+                },
+                "codeComparator": "~",
+                "type": "Retrieve",
+                "dataType": "{http://hl7.org/fhir}Encounter",
+                "codes": {
+                  "type": "ToList",
+                  "operand": {
+                    "system": {
+                      "name": "Kontaktebene",
+                      "type": "CodeSystemRef",
+                      "resultTypeName": "{urn:hl7-org:elm-types:r1}CodeSystem"
+                    },
+                    "type": "Code",
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Code",
+                    "code": "abteilungskontakt"
+                  }
+                },
+                "codeProperty": "type"
+              },
+              "type": "AliasedQuerySource",
+              "alias": "E"
+            }
+          ],
+          "sort": {
+            "type": "SortClause",
+            "by": [
+              {
+                "expression": {
+                  "path": "start",
+                  "type": "Property",
+                  "source": {
+                    "name": "period",
+                    "type": "IdentifierRef",
+                    "resultTypeName": "{http://hl7.org/fhir}Period"
+                  },
+                  "resultTypeName": "{http://hl7.org/fhir}dateTime"
+                },
+                "type": "ByExpression",
+                "resultTypeName": "{http://hl7.org/fhir}dateTime",
+                "direction": "asc"
+              }
+            ]
+          }
+        },
+        "name": "Encounters",
+        "type": "ExpressionDef",
+        "context": "Patient"
+      },
+      {
+        "accessLevel": "Public",
+        "expression": {
+          "type": "First",
+          "source": {
+            "resultTypeSpecifier": {
+              "type": "ListTypeSpecifier",
+              "elementType": {
+                "name": "{http://hl7.org/fhir}code",
+                "type": "NamedTypeSpecifier"
+              }
+            },
+            "where": {
+              "type": "Not",
+              "operand": {
+                "type": "IsNull",
+                "operand": {
+                  "path": "code",
+                  "type": "Property",
+                  "source": {
+                    "name": "$this",
                     "type": "AliasRef"
                   }
-                ]
+                }
+              }
+            },
+            "return": {
+              "expression": {
+                "path": "code",
+                "type": "Property",
+                "source": {
+                  "name": "$this",
+                  "type": "AliasRef"
+                }
               },
               "type": "ReturnClause",
               "distinct": false
@@ -719,196 +1064,935 @@
                   "resultTypeSpecifier": {
                     "type": "ListTypeSpecifier",
                     "elementType": {
-                      "name": "{http://hl7.org/fhir}code",
+                      "name": "{http://hl7.org/fhir}Coding",
                       "type": "NamedTypeSpecifier"
                     }
                   },
-                  "type": "Flatten",
-                  "operand": {
-                    "resultTypeSpecifier": {
-                      "type": "ListTypeSpecifier",
-                      "elementType": {
-                        "type": "ListTypeSpecifier",
-                        "elementType": {
-                          "name": "{http://hl7.org/fhir}code",
-                          "type": "NamedTypeSpecifier"
-                        }
-                      }
-                    },
-                    "return": {
-                      "resultTypeSpecifier": {
-                        "type": "ListTypeSpecifier",
-                        "elementType": {
-                          "type": "ListTypeSpecifier",
-                          "elementType": {
-                            "name": "{http://hl7.org/fhir}code",
-                            "type": "NamedTypeSpecifier"
-                          }
-                        }
-                      },
-                      "expression": {
-                        "resultTypeSpecifier": {
-                          "type": "ListTypeSpecifier",
-                          "elementType": {
-                            "name": "{http://hl7.org/fhir}code",
-                            "type": "NamedTypeSpecifier"
-                          }
-                        },
-                        "where": {
-                          "type": "Not",
-                          "operand": {
-                            "type": "IsNull",
-                            "operand": {
-                              "path": "code",
-                              "type": "Property",
-                              "source": {
-                                "name": "$this",
-                                "type": "AliasRef"
-                              }
-                            }
-                          }
-                        },
-                        "return": {
-                          "expression": {
-                            "path": "code",
-                            "type": "Property",
-                            "source": {
-                              "name": "$this",
-                              "type": "AliasRef"
-                            }
-                          },
-                          "type": "ReturnClause",
-                          "distinct": false
-                        },
-                        "type": "Query",
-                        "source": [
+                  "where": {
+                    "type": "Equal",
+                    "operand": [
+                      {
+                        "name": "ToString",
+                        "type": "FunctionRef",
+                        "libraryName": "FHIRHelpers",
+                        "operand": [
                           {
-                            "expression": {
-                              "resultTypeSpecifier": {
-                                "type": "ListTypeSpecifier",
-                                "elementType": {
-                                  "name": "{http://hl7.org/fhir}Coding",
-                                  "type": "NamedTypeSpecifier"
-                                }
-                              },
-                              "where": {
-                                "type": "Equal",
-                                "operand": [
-                                  {
-                                    "name": "ToString",
-                                    "type": "FunctionRef",
-                                    "libraryName": "FHIRHelpers",
-                                    "operand": [
-                                      {
-                                        "path": "system",
-                                        "type": "Property",
-                                        "scope": "$this",
-                                        "resultTypeName": "{http://hl7.org/fhir}uri"
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "valueType": "{urn:hl7-org:elm-types:r1}String",
-                                    "value": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
-                                    "type": "Literal",
-                                    "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
-                                  }
-                                ],
-                                "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
-                              },
-                              "type": "Query",
-                              "source": [
-                                {
-                                  "expression": {
-                                    "path": "coding",
-                                    "resultTypeSpecifier": {
-                                      "type": "ListTypeSpecifier",
-                                      "elementType": {
-                                        "name": "{http://hl7.org/fhir}Coding",
-                                        "type": "NamedTypeSpecifier"
-                                      }
-                                    },
-                                    "type": "Property",
-                                    "source": {
-                                      "path": "serviceType",
-                                      "type": "Property",
-                                      "scope": "E",
-                                      "resultTypeName": "{http://hl7.org/fhir}CodeableConcept"
-                                    }
-                                  },
-                                  "type": "AliasedQuerySource",
-                                  "alias": "$this"
-                                }
-                              ]
-                            },
-                            "type": "AliasedQuerySource",
-                            "alias": "$this"
+                            "path": "system",
+                            "type": "Property",
+                            "scope": "$this",
+                            "resultTypeName": "{http://hl7.org/fhir}uri"
                           }
                         ]
                       },
-                      "type": "ReturnClause"
-                    },
-                    "relationship": [],
-                    "type": "Query",
-                    "source": [
                       {
+                        "valueType": "{urn:hl7-org:elm-types:r1}String",
+                        "value": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+                        "type": "Literal",
+                        "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+                      }
+                    ],
+                    "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+                  },
+                  "type": "Query",
+                  "source": [
+                    {
+                      "expression": {
+                        "path": "coding",
                         "resultTypeSpecifier": {
                           "type": "ListTypeSpecifier",
                           "elementType": {
-                            "name": "{http://hl7.org/fhir}Encounter",
+                            "name": "{http://hl7.org/fhir}Coding",
                             "type": "NamedTypeSpecifier"
                           }
                         },
-                        "expression": {
-                          "resultTypeSpecifier": {
-                            "type": "ListTypeSpecifier",
-                            "elementType": {
-                              "name": "{http://hl7.org/fhir}Encounter",
-                              "type": "NamedTypeSpecifier"
-                            }
+                        "type": "Property",
+                        "source": {
+                          "path": "serviceType",
+                          "type": "Property",
+                          "source": {
+                            "type": "First",
+                            "source": {
+                              "resultTypeSpecifier": {
+                                "type": "ListTypeSpecifier",
+                                "elementType": {
+                                  "name": "{http://hl7.org/fhir}Encounter",
+                                  "type": "NamedTypeSpecifier"
+                                }
+                              },
+                              "name": "Encounters",
+                              "type": "ExpressionRef"
+                            },
+                            "resultTypeName": "{http://hl7.org/fhir}Encounter"
                           },
-                          "type": "Retrieve",
-                          "dataType": "{http://hl7.org/fhir}Encounter"
-                        },
-                        "type": "AliasedQuerySource",
-                        "alias": "E"
-                      }
-                    ]
-                  }
+                          "resultTypeName": "{http://hl7.org/fhir}CodeableConcept"
+                        }
+                      },
+                      "type": "AliasedQuerySource",
+                      "alias": "$this"
+                    }
+                  ]
                 },
                 "type": "AliasedQuerySource",
-                "alias": "X"
+                "alias": "$this"
               }
             ]
           },
-          "resultTypeName": "{urn:hl7-org:elm-types:r1}String",
-          "separator": {
-            "valueType": "{urn:hl7-org:elm-types:r1}String",
-            "value": ",",
-            "type": "Literal",
-            "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
-          }
+          "resultTypeName": "{http://hl7.org/fhir}code"
         },
         "name": "DepartmentKey",
         "type": "ExpressionDef",
-        "resultTypeName": "{urn:hl7-org:elm-types:r1}String",
+        "resultTypeName": "{http://hl7.org/fhir}code",
         "context": "Patient"
       },
       {
         "accessLevel": "Public",
         "expression": {
-          "path": "gender",
-          "type": "Property",
-          "source": {
-            "name": "Patient",
-            "type": "ExpressionRef",
-            "resultTypeName": "{http://hl7.org/fhir}Patient"
+          "else": {
+            "name": "ToString",
+            "type": "FunctionRef",
+            "libraryName": "FHIRHelpers",
+            "operand": [
+              {
+                "path": "gender",
+                "type": "Property",
+                "source": {
+                  "name": "Patient",
+                  "type": "ExpressionRef",
+                  "resultTypeName": "{http://hl7.org/fhir}Patient"
+                },
+                "resultTypeName": "{http://hl7.org/fhir}AdministrativeGender"
+              }
+            ]
           },
-          "resultTypeName": "{http://hl7.org/fhir}AdministrativeGender"
+          "type": "If",
+          "resultTypeName": "{urn:hl7-org:elm-types:r1}String",
+          "condition": {
+            "type": "Equal",
+            "operand": [
+              {
+                "name": "ToString",
+                "type": "FunctionRef",
+                "libraryName": "FHIRHelpers",
+                "operand": [
+                  {
+                    "path": "gender",
+                    "type": "Property",
+                    "source": {
+                      "name": "Patient",
+                      "type": "ExpressionRef",
+                      "resultTypeName": "{http://hl7.org/fhir}Patient"
+                    },
+                    "resultTypeName": "{http://hl7.org/fhir}AdministrativeGender"
+                  }
+                ]
+              },
+              {
+                "valueType": "{urn:hl7-org:elm-types:r1}String",
+                "value": "other",
+                "type": "Literal",
+                "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+              }
+            ],
+            "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+          },
+          "then": {
+            "else": {
+              "valueType": "{urn:hl7-org:elm-types:r1}String",
+              "value": "other",
+              "type": "Literal",
+              "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+            },
+            "type": "Case",
+            "resultTypeName": "{urn:hl7-org:elm-types:r1}String",
+            "caseItem": [
+              {
+                "when": {
+                  "type": "Equal",
+                  "operand": [
+                    {
+                      "name": "ToString",
+                      "type": "FunctionRef",
+                      "libraryName": "FHIRHelpers",
+                      "operand": [
+                        {
+                          "asType": "{http://hl7.org/fhir}code",
+                          "type": "As",
+                          "operand": {
+                            "type": "SingletonFrom",
+                            "operand": {
+                              "resultTypeSpecifier": {
+                                "type": "ListTypeSpecifier",
+                                "elementType": {
+                                  "type": "ChoiceTypeSpecifier",
+                                  "choice": [
+                                    {
+                                      "name": "{http://hl7.org/fhir}code",
+                                      "type": "NamedTypeSpecifier"
+                                    },
+                                    {
+                                      "name": "{http://hl7.org/fhir}CodeableConcept",
+                                      "type": "NamedTypeSpecifier"
+                                    },
+                                    {
+                                      "name": "{http://hl7.org/fhir}Coding",
+                                      "type": "NamedTypeSpecifier"
+                                    }
+                                  ]
+                                }
+                              },
+                              "where": {
+                                "type": "Not",
+                                "operand": {
+                                  "type": "IsNull",
+                                  "operand": {
+                                    "path": "code",
+                                    "type": "Property",
+                                    "source": {
+                                      "name": "$this",
+                                      "type": "AliasRef"
+                                    }
+                                  }
+                                }
+                              },
+                              "return": {
+                                "expression": {
+                                  "path": "code",
+                                  "type": "Property",
+                                  "source": {
+                                    "name": "$this",
+                                    "type": "AliasRef"
+                                  }
+                                },
+                                "type": "ReturnClause",
+                                "distinct": false
+                              },
+                              "type": "Query",
+                              "source": [
+                                {
+                                  "expression": {
+                                    "resultTypeSpecifier": {
+                                      "type": "ListTypeSpecifier",
+                                      "elementType": {
+                                        "type": "ChoiceTypeSpecifier",
+                                        "choice": [
+                                          {
+                                            "name": "{http://hl7.org/fhir}base64Binary",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}boolean",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}canonical",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}code",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}date",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}dateTime",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}decimal",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}id",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}instant",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}integer",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}markdown",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}oid",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}positiveInt",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}string",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}time",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}unsignedInt",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}uri",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}url",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}uuid",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Address",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Age",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Annotation",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Attachment",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}CodeableConcept",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Coding",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}ContactPoint",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Count",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Distance",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Duration",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}HumanName",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Identifier",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Money",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Period",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Quantity",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Range",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Ratio",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Reference",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}SampledData",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Signature",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Timing",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}ContactDetail",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Contributor",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}DataRequirement",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Expression",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}ParameterDefinition",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}RelatedArtifact",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}TriggerDefinition",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}UsageContext",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Dosage",
+                                            "type": "NamedTypeSpecifier"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "where": {
+                                      "type": "Not",
+                                      "operand": {
+                                        "type": "IsNull",
+                                        "operand": {
+                                          "path": "value",
+                                          "type": "Property",
+                                          "source": {
+                                            "name": "$this",
+                                            "type": "AliasRef"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "return": {
+                                      "expression": {
+                                        "path": "value",
+                                        "type": "Property",
+                                        "source": {
+                                          "name": "$this",
+                                          "type": "AliasRef"
+                                        }
+                                      },
+                                      "type": "ReturnClause",
+                                      "distinct": false
+                                    },
+                                    "type": "Query",
+                                    "source": [
+                                      {
+                                        "expression": {
+                                          "resultTypeSpecifier": {
+                                            "type": "ListTypeSpecifier",
+                                            "elementType": {
+                                              "name": "{http://hl7.org/fhir}Extension",
+                                              "type": "NamedTypeSpecifier"
+                                            }
+                                          },
+                                          "where": {
+                                            "type": "Equal",
+                                            "operand": [
+                                              {
+                                                "name": "ToString",
+                                                "type": "FunctionRef",
+                                                "libraryName": "FHIRHelpers",
+                                                "operand": [
+                                                  {
+                                                    "path": "url",
+                                                    "type": "Property",
+                                                    "scope": "$this",
+                                                    "resultTypeName": "{http://hl7.org/fhir}uri"
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "valueType": "{urn:hl7-org:elm-types:r1}String",
+                                                "value": "http://fhir.de/StructureDefinition/gender-amtlich-de",
+                                                "type": "Literal",
+                                                "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+                                              }
+                                            ],
+                                            "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+                                          },
+                                          "type": "Query",
+                                          "source": [
+                                            {
+                                              "expression": {
+                                                "path": "extension",
+                                                "resultTypeSpecifier": {
+                                                  "type": "ListTypeSpecifier",
+                                                  "elementType": {
+                                                    "name": "{http://hl7.org/fhir}Extension",
+                                                    "type": "NamedTypeSpecifier"
+                                                  }
+                                                },
+                                                "type": "Property",
+                                                "source": {
+                                                  "path": "gender",
+                                                  "type": "Property",
+                                                  "source": {
+                                                    "name": "Patient",
+                                                    "type": "ExpressionRef",
+                                                    "resultTypeName": "{http://hl7.org/fhir}Patient"
+                                                  },
+                                                  "resultTypeName": "{http://hl7.org/fhir}AdministrativeGender"
+                                                }
+                                              },
+                                              "type": "AliasedQuerySource",
+                                              "alias": "$this"
+                                            }
+                                          ]
+                                        },
+                                        "type": "AliasedQuerySource",
+                                        "alias": "$this"
+                                      }
+                                    ]
+                                  },
+                                  "type": "AliasedQuerySource",
+                                  "alias": "$this"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "valueType": "{urn:hl7-org:elm-types:r1}String",
+                      "value": "D",
+                      "type": "Literal",
+                      "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+                    }
+                  ],
+                  "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+                },
+                "type": "CaseItem",
+                "then": {
+                  "valueType": "{urn:hl7-org:elm-types:r1}String",
+                  "value": "divers",
+                  "type": "Literal",
+                  "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+                }
+              },
+              {
+                "when": {
+                  "type": "Equal",
+                  "operand": [
+                    {
+                      "name": "ToString",
+                      "type": "FunctionRef",
+                      "libraryName": "FHIRHelpers",
+                      "operand": [
+                        {
+                          "asType": "{http://hl7.org/fhir}code",
+                          "type": "As",
+                          "operand": {
+                            "type": "SingletonFrom",
+                            "operand": {
+                              "resultTypeSpecifier": {
+                                "type": "ListTypeSpecifier",
+                                "elementType": {
+                                  "type": "ChoiceTypeSpecifier",
+                                  "choice": [
+                                    {
+                                      "name": "{http://hl7.org/fhir}code",
+                                      "type": "NamedTypeSpecifier"
+                                    },
+                                    {
+                                      "name": "{http://hl7.org/fhir}CodeableConcept",
+                                      "type": "NamedTypeSpecifier"
+                                    },
+                                    {
+                                      "name": "{http://hl7.org/fhir}Coding",
+                                      "type": "NamedTypeSpecifier"
+                                    }
+                                  ]
+                                }
+                              },
+                              "where": {
+                                "type": "Not",
+                                "operand": {
+                                  "type": "IsNull",
+                                  "operand": {
+                                    "path": "code",
+                                    "type": "Property",
+                                    "source": {
+                                      "name": "$this",
+                                      "type": "AliasRef"
+                                    }
+                                  }
+                                }
+                              },
+                              "return": {
+                                "expression": {
+                                  "path": "code",
+                                  "type": "Property",
+                                  "source": {
+                                    "name": "$this",
+                                    "type": "AliasRef"
+                                  }
+                                },
+                                "type": "ReturnClause",
+                                "distinct": false
+                              },
+                              "type": "Query",
+                              "source": [
+                                {
+                                  "expression": {
+                                    "resultTypeSpecifier": {
+                                      "type": "ListTypeSpecifier",
+                                      "elementType": {
+                                        "type": "ChoiceTypeSpecifier",
+                                        "choice": [
+                                          {
+                                            "name": "{http://hl7.org/fhir}base64Binary",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}boolean",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}canonical",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}code",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}date",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}dateTime",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}decimal",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}id",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}instant",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}integer",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}markdown",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}oid",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}positiveInt",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}string",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}time",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}unsignedInt",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}uri",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}url",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}uuid",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Address",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Age",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Annotation",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Attachment",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}CodeableConcept",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Coding",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}ContactPoint",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Count",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Distance",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Duration",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}HumanName",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Identifier",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Money",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Period",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Quantity",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Range",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Ratio",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Reference",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}SampledData",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Signature",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Timing",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}ContactDetail",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Contributor",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}DataRequirement",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Expression",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}ParameterDefinition",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}RelatedArtifact",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}TriggerDefinition",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}UsageContext",
+                                            "type": "NamedTypeSpecifier"
+                                          },
+                                          {
+                                            "name": "{http://hl7.org/fhir}Dosage",
+                                            "type": "NamedTypeSpecifier"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "where": {
+                                      "type": "Not",
+                                      "operand": {
+                                        "type": "IsNull",
+                                        "operand": {
+                                          "path": "value",
+                                          "type": "Property",
+                                          "source": {
+                                            "name": "$this",
+                                            "type": "AliasRef"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "return": {
+                                      "expression": {
+                                        "path": "value",
+                                        "type": "Property",
+                                        "source": {
+                                          "name": "$this",
+                                          "type": "AliasRef"
+                                        }
+                                      },
+                                      "type": "ReturnClause",
+                                      "distinct": false
+                                    },
+                                    "type": "Query",
+                                    "source": [
+                                      {
+                                        "expression": {
+                                          "resultTypeSpecifier": {
+                                            "type": "ListTypeSpecifier",
+                                            "elementType": {
+                                              "name": "{http://hl7.org/fhir}Extension",
+                                              "type": "NamedTypeSpecifier"
+                                            }
+                                          },
+                                          "where": {
+                                            "type": "Equal",
+                                            "operand": [
+                                              {
+                                                "name": "ToString",
+                                                "type": "FunctionRef",
+                                                "libraryName": "FHIRHelpers",
+                                                "operand": [
+                                                  {
+                                                    "path": "url",
+                                                    "type": "Property",
+                                                    "scope": "$this",
+                                                    "resultTypeName": "{http://hl7.org/fhir}uri"
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "valueType": "{urn:hl7-org:elm-types:r1}String",
+                                                "value": "http://fhir.de/StructureDefinition/gender-amtlich-de",
+                                                "type": "Literal",
+                                                "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+                                              }
+                                            ],
+                                            "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+                                          },
+                                          "type": "Query",
+                                          "source": [
+                                            {
+                                              "expression": {
+                                                "path": "extension",
+                                                "resultTypeSpecifier": {
+                                                  "type": "ListTypeSpecifier",
+                                                  "elementType": {
+                                                    "name": "{http://hl7.org/fhir}Extension",
+                                                    "type": "NamedTypeSpecifier"
+                                                  }
+                                                },
+                                                "type": "Property",
+                                                "source": {
+                                                  "path": "gender",
+                                                  "type": "Property",
+                                                  "source": {
+                                                    "name": "Patient",
+                                                    "type": "ExpressionRef",
+                                                    "resultTypeName": "{http://hl7.org/fhir}Patient"
+                                                  },
+                                                  "resultTypeName": "{http://hl7.org/fhir}AdministrativeGender"
+                                                }
+                                              },
+                                              "type": "AliasedQuerySource",
+                                              "alias": "$this"
+                                            }
+                                          ]
+                                        },
+                                        "type": "AliasedQuerySource",
+                                        "alias": "$this"
+                                      }
+                                    ]
+                                  },
+                                  "type": "AliasedQuerySource",
+                                  "alias": "$this"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "valueType": "{urn:hl7-org:elm-types:r1}String",
+                      "value": "X",
+                      "type": "Literal",
+                      "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+                    }
+                  ],
+                  "resultTypeName": "{urn:hl7-org:elm-types:r1}Boolean"
+                },
+                "type": "CaseItem",
+                "then": {
+                  "valueType": "{urn:hl7-org:elm-types:r1}String",
+                  "value": "unbestimmt",
+                  "type": "Literal",
+                  "resultTypeName": "{urn:hl7-org:elm-types:r1}String"
+                }
+              }
+            ]
+          }
         },
         "name": "Gender",
         "type": "ExpressionDef",
-        "resultTypeName": "{http://hl7.org/fhir}AdministrativeGender",
+        "resultTypeName": "{urn:hl7-org:elm-types:r1}String",
         "context": "Patient"
       },
       {
