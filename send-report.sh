@@ -1,5 +1,11 @@
 #!/bin/bash -e
 
+if ! command -v jq &> /dev/null
+then
+    echo "jq could not be found. Please use your package manager to install it."
+    exit 1
+fi
+
 create_bundle() {
   auth="$1"
   if ! doc_ref_id=$(get_doc_ref_id "$auth")
