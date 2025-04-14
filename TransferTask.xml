@@ -5,11 +5,12 @@
     <instantiatesCanonical value="http://medizininformatik-initiative.de/bpe/Process/dataSend|1.0"/>
     <status value="requested" />
     <intent value="order" />
-    <authoredOn value="2022-11-16T11:00:00+01:00" />
+    <!-- Example: <authoredOn value="2025-04-14T14:16:00+01:00"/> -->
+    <authoredOn value="<REPLACE-WITH-DATE-TIME>"/>
     <requester>
         <type value="Organization" />
         <identifier>
-            <system value="<dic-identifier-system>" />
+            <system value="http://dsf.dev/sid/organization-identifier" />
             <value value="<dic-identifier-value>" />
         </identifier>
     </requester>
@@ -17,7 +18,7 @@
         <recipient>
             <type value="Organization" />
             <identifier>
-                <system value="<dic-identifier-system>" />
+                <system value="http://dsf.dev/sid/organization-identifier" />
                 <value value="<dic-identifier-value>" />
             </identifier>
         </recipient>
@@ -41,8 +42,8 @@
         <valueReference>
             <type value="Organization" />
             <identifier>
-                <system value="<hrp-identifier-system>" />
-                <value value="<hrp-identifier-value>" />
+                <system value="http://dsf.dev/sid/organization-identifier" />
+                <value value="forschen-fuer-gesundheit.de" />
             </identifier>
         </valueReference>
     </input>
