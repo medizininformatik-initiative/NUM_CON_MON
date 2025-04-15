@@ -5,30 +5,30 @@ CQL Measure for the NUM-CON-MON project, including test data.
 ## Inhaltsverzeichnis
 
 1. [Beschreibung](#beschreibung)
-2. [Dateien](#dateien)
-3. [Deployment](#deployment-)
+1. [Dateien](#dateien)
+1. [Deployment](#deployment-)
     - [1. Evaluate Measure](#1-evaluate-measure)
     - [2. Upload MeasureReport](#2-upload-measurereport)
     - [3. Transfer MeasureReport vom DIZ zur HRP](#3-transfer-measurereport-vom-diz-zur-hrp)
-4. [Voraussetzungen](#voraussetzungen)
+1. [Voraussetzungen](#voraussetzungen)
 
 ---
 
-## **Beschreibung**
+## Beschreibung
 
 1. Führt die Auswertung einer Measure Ressource auf einem FHIR-Server durch.
-2. Extrahiert folgende Daten:
+1. Extrahiert folgende Daten:
     - Gesamtanzahl der Patienten in zwei Kohorten.
     - Aufschlüsselung für Kohorte 2:
         - Verteilung der Kassenzugehörigkeit je Standort.
         - Verteilung nach Fachabteilungen.
         - Verteilung nach Geschlecht.
         - Verteilung nach Altersgruppen (<18 Jahre, 18–64 Jahre, 65+ Jahre).
-3. Speichert die extrahierten Daten in CSV-Dateien für eine einfache Analyse und einer JSON Datei als FHIR MeasureReport. 
+1. Speichert die extrahierten Daten in CSV-Dateien für eine einfache Analyse und einer JSON Datei als FHIR MeasureReport. 
 
 ---
 
-## **Dateien**
+## Dateien
 
 - `num-con-mon.yml`: Die Measure-Definition im YAML-Format.
 - `num-con-mon-cql`: `cql`-Skript mit den Definitionen für die Ressourcen Zähĺungen
@@ -41,9 +41,9 @@ CQL Measure for the NUM-CON-MON project, including test data.
 
 ---
 
-## **Deployment**  
+## Deployment  
 
-### **1. Evaluate Measure**
+### 1. Evaluate Measure
 
 Ausführung des Skripts `evaluat-measure.sh` mit Übergabe der URL des FHIR-Servers als Parameter. Wird keine URL angegeben, wird standardmäßig `http://localhost:8080/fhir` verwendet:
 
@@ -63,7 +63,7 @@ Das Skript erzeugt folgende Dateien:
 
 ---
 
-### **2. Upload des MeasureReports**
+### 2. Upload des MeasureReports
 
 Für den Datentransfer per DSF muss der MeasureReport `report-de-identified.json` 
 mit einer zugehörigen DocumentReference `your-dsf-fhir-server`, die der DSF BPE zugänglich ist 
@@ -85,7 +85,7 @@ Usage: send-report.sh <report-file> <report-server>
 
 ---
 
-### **3. Transfer des MeasureReports vom DIZ zur HRP**
+### 3. Transfer des MeasureReports vom DIZ zur HRP
 
 Mit dem [MII Data Transfer Process](https://github.com/medizininformatik-initiative/mii-process-data-transfer)
 kann der MeasureReport vom ans DSF angeschlossenen DIZ FHIR Server an den HRP FHIR Server gesendet werden. 
@@ -118,7 +118,7 @@ https://<fhir-base-url>/fhir/Task
 - `client-certificate_private-key.pem` zum client certificate gehörender private key
 - `<fhir-base-url>` Base URL vom DIZ FHIR Server
 
-### **4. Auslösen des dataSendStart Tasks im DSF Frontend**
+### 4. Auslösen des dataSendStart Tasks im DSF Frontend
 
 Der Datensendeprozess kann im DSF Frontend gestartet werden, indem die folgende URL 
 aufgerufen wird (<dsf-fhir-base-url> muss durch die Basis-URL des DSF FHIR Servers ersetzt werden): 
@@ -140,7 +140,7 @@ project-identifier
 
 ---
 
-## **Voraussetzungen**
+## Voraussetzungen
 
 1. **`jq` installieren**:
 
@@ -162,4 +162,4 @@ blazectl verwendet nur diese FHIR-API.
 brew install borkdude/brew/babashka
 ```
 
-4. **Docker** (nur für den Betrieb der Testumgebung inklusive Blaze)
+1. **Docker** (nur für den Betrieb der Testumgebung inklusive Blaze)
