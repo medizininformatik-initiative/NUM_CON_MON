@@ -2,6 +2,8 @@
 
 CQL Measure for the NUM-CON-MON project.
 
+---
+
 ## **Content**
 
 1. [Description](#description)
@@ -9,8 +11,7 @@ CQL Measure for the NUM-CON-MON project.
 3. [Deployment](#deployment)
     - [1. Evaluate Measure](#1-evaluate-measure)
     - [2. Upload MeasureReport](#2-upload-measurereport)
-    - [3. DataTransfer Preparation (One-Time)](#3-preparation-datatransfer-one-time)
-    - [4. Trigger `dataSendStart` Task in DSF Frontend](#4-trigger-datasendstart-task-in-the-dsf-frontend)
+    - [3. DSF DataTransfer](#3-dsf-datatransfer)
 4. [Prerequisites](#prerequisites)
 6. [Setting up the Test Environment & Test Data Transfer](#setting-up-the-test-environment--test-data-transfer)
 
@@ -45,6 +46,10 @@ CQL Measure for the NUM-CON-MON project.
 
 ## **Deployment**  
 
+For deployment purposes, it is essential to distinguish between the DIC FHIR server and the DSF FHIR server.
+The DIC FHIR server houses all CDS-related FHIR resources. In contrast, the DSF FHIR server, alongside BPE,
+constitutes a primary component of the DSF, containing the necessary FHIR resources for the DSF process workflow.
+
 ### **1. Evaluate Measure**
 
 Execute the `evaluate-measure.sh` script, passing the URL of the FHIR server as a parameter. If no URL is provided, 
@@ -63,29 +68,6 @@ and specific metrics are extracted into CSV files for further analysis. The scri
 - `gender.csv`: Distribution by gender.
 - `age-class.csv`: Distribution by age groups.
 
-
-## **Deployment**
-
-### **1. Evaluate Measure**
-
-Executes the `evaluate-measure.sh` script, passing the URL of the FHIR server as a parameter. If no URL is specified, 
-the default `http://localhost:8080/fhir` is used:
-
-```bash
-./evaluate-measure.sh <dic-fhir-base-url>/fhir
-```
-
-`evaluate-measure.sh` automates the evaluation of a Measure-YAML file on a FHIR server. It generates a detailed report 
-and extracts specific metrics into CSV files for further analysis. The script produces the following files:
-
--   `report-de-identified.json`: The MeasureReport in JSON format.
--   `ik-number.csv`: Distribution of health insurance affiliation by location.
--   `department-key.csv`: Distribution by department.
--   `gender.csv`: Distribution by gender.
--   `age-class.csv`: Distribution by age group.
-
----
-
 ### **2. Upload MeasureReport**
 
 For data transfer via DSF, the `report-de-identified.json` MeasureReport must be sent with an associated DocumentReference 
@@ -103,14 +85,18 @@ send-report.sh <report-file> <report-server>
 send-report.sh <report-file> <report-server> [-u <user> -p <password>]
 send-report.sh <report-file> <report-server> [-i <issuer-url> -c <client-id> -s <client-secret>]
 ```
----
 
-### **3. Preparation DataTransfer (one-time)**
+### **3. DSF DataTransfer**
 
-Using the [MII Data Transfer Process](https://github.com/medizininformatik-initiative/mii-process-data-transfer), 
-the MeasureReport can be sent from the dic FHIR server connected to DSF to the HRP FHIR server. A detailed description 
-of the DataTransfer process can be found [here](https://github.com/medicininformatik-initiative/mii-process-data-transfer/wiki).
-Before triggering the transfer, the [TransferTask.xml](TransferTask.xml) file must be sent to the dic FHIR server with 
+Using the [MII Data Transfer Process](https://github.com/medizininformatik-initiative/mii-process-data-transfer),
+the MeasureReport can be sent from the DIC FHIR server to the HRP FHIR server. A detailed description
+of the DataTransfer process can be found [here](https://github.com/medizininformatik-initiative/mii-process-data-transfer/wiki).
+
+There are two possibilities to execute the data transfer.
+
+**(a) Via Command Line**
+
+For triggering the transfer, the [TransferTask.xml](TransferTask.xml) file must be sent to the DSF FHIR server with 
 the corresponding entries. The following fields are relevant (marked with `<...>` brackets):
 
 | Default Value                | Description                                       | Local Value                       |
@@ -119,7 +105,7 @@ the corresponding entries. The following fields are relevant (marked with `<...>
 | `<dic-identifier-value>`     | DIC identification value (Source: MeasureReport)  | e.g., `ukhd.de`                   |
 
 
-**Sending the Task to the DIC FHIR Server with curl**
+**Sending the task to the DSF FHIR server with curl**
 
 ```
 curl \
@@ -127,20 +113,17 @@ curl \
 --key client-certificate_private-key.pem \
 -H "Accept: application/fhir+xml" -H "Content-Type: application/fhir+xml" \
 -d @TransferTask.xml \
-https://<dic-fhir-base-url>/fhir/Task
+https://<dsf-fhir-base-url>/fhir/Task
 ```
 
 - `TransferTask.xml` corresponding Task resource
-- `<dic-fhir-base-url>` Base URL of the DIC FHIR Server
-
-optional (if the DIC FHIR Server requires authentication):
-
-- `client-certificate.pem` Client certificate
-- `client-certificate_private-key.pem` Private key belonging to the Client certificate
+- `<dsf-fhir-base-url>` base URL of the DSF FHIR Server
+- `client-certificate.pem` client certificate
+- `client-certificate_private-key.pem` private key belonging to the client certificate
 
 ---
 
-### **4. Trigger dataSendStart Task in the DSF Frontend**
+**b) Via DataSendStart Task in the DSF Frontend**
 
 The data transfer process can be started in the DSF frontend by calling the following URL (replace `<dsf-fhir-base-url>` 
 with the base URL of the DSF FHIR server):
@@ -210,7 +193,7 @@ docker compose up -d
 ./send-report.sh report-de-identified.json http://localhost:8080/fhir
 ```
 
-Send the Task to the dic FHIR Server using curl
+Send the Task to the DSF FHIR Server using curl
 based on a [Test Setup](https://github.com/medizininformatik-initiative/mii-processes-test-setup/blob/main/docker/README-Process-Data-Transfer.md):
 ```
 curl -H "Accept: application/xml+fhir" -H "Content-Type: application/fhir+xml" \
