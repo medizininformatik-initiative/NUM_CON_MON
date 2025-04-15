@@ -46,20 +46,20 @@ CQL Measure for the NUM-CON-MON project.
 
 ## **Deployment**  
 
-For deployment purposes, it is essential to distinguish between the DIC FHIR server and the DSF FHIR server.
-The DIC FHIR server houses all CDS-related FHIR resources. In contrast, the DSF FHIR server, alongside BPE,
+For deployment purposes, it is essential to distinguish between the **DIC FHIR server** and the **DSF FHIR server**.
+The **DIC FHIR server** houses all CDS-related FHIR resources. In contrast, the **DSF FHIR server**, alongside BPE,
 constitutes a primary component of the DSF, containing the necessary FHIR resources for the DSF process workflow.
 
 ### **1. Evaluate Measure**
 
-Execute the `evaluate-measure.sh` script, passing the URL of the FHIR server as a parameter. If no URL is provided, 
+Execute the `evaluate-measure.sh` script, passing the URL of the **DIC FHIR server** as a parameter. If no URL is provided, 
 `http://localhost:8080/fhir` is used by default:
 
 ```bash
 ./evaluate-measure.sh <dic-fhir-base-url>/fhir
 ```
 
-`evaluate-measure.sh` automates the evaluation of a Measure YAML file on a FHIR server. A detailed report is created, 
+`evaluate-measure.sh` automates the evaluation of a Measure YAML file on the **DIC FHIR server**. A detailed report is created, 
 and specific metrics are extracted into CSV files for further analysis. The script generates the following files:
 
 - `report-de-identified.json`: The MeasureReport in JSON format.
@@ -71,10 +71,10 @@ and specific metrics are extracted into CSV files for further analysis. The scri
 ### **2. Upload MeasureReport**
 
 For data transfer via DSF, the `report-de-identified.json` MeasureReport must be sent with an associated DocumentReference 
-to the FHIR server connected to DSF (BPE). This is accomplished using the `send-report.sh` script. If a DocumentReference 
+to the **DIC FHIR server**. This is accomplished using the `send-report.sh` script. If a DocumentReference 
 with the same project identification system (`http://medizininformatik-initiative.de/fhir/CodeSystem/data-transfer`) 
-and value (`num-con-mon`) already exists on the FHIR server, the DocumentReference is updated to point to the new MeasureReport. 
-A previous MeasureReport is not updated or deleted and remains on the FHIR server.
+and value (`num-con-mon`) already exists on the **DIC FHIR server**, the DocumentReference is updated to point to the new MeasureReport. 
+A previous MeasureReport is not updated or deleted and remains on the **DIC FHIR server**.
 
 ```bash
 ./send-report.sh report-de-identified.json <dic-fhir-base-url>/fhir
@@ -89,14 +89,14 @@ send-report.sh <report-file> <report-server> [-i <issuer-url> -c <client-id> -s 
 ### **3. DSF DataTransfer**
 
 Using the [MII Data Transfer Process](https://github.com/medizininformatik-initiative/mii-process-data-transfer),
-the MeasureReport can be sent from the DIC FHIR server to the HRP FHIR server. A detailed description
+the MeasureReport can be sent from the **DIC FHIR server** to the **HRP FHIR server**. A detailed description
 of the DataTransfer process can be found [here](https://github.com/medizininformatik-initiative/mii-process-data-transfer/wiki).
 
 There are two possibilities to execute the data transfer.
 
 **(a) Via Command Line**
 
-For triggering the transfer, the [TransferTask.xml](TransferTask.xml) file must be sent to the DSF FHIR server with 
+For triggering the transfer, the [TransferTask.xml](TransferTask.xml) file must be sent to the **DSF FHIR server** with 
 the corresponding entries. The following fields are relevant (marked with `<...>` brackets):
 
 | Default Value                | Description                                       | Local Value                       |
@@ -117,7 +117,7 @@ https://<dsf-fhir-base-url>/fhir/Task
 ```
 
 - `TransferTask.xml` corresponding Task resource
-- `<dsf-fhir-base-url>` base URL of the DSF FHIR Server
+- `<dsf-fhir-base-url>` base URL of the **DSF FHIR server**
 - `client-certificate.pem` client certificate
 - `client-certificate_private-key.pem` private key belonging to the client certificate
 
@@ -126,7 +126,7 @@ https://<dsf-fhir-base-url>/fhir/Task
 **b) Via DataSendStart Task in the DSF Frontend**
 
 The data transfer process can be started in the DSF frontend by calling the following URL (replace `<dsf-fhir-base-url>` 
-with the base URL of the DSF FHIR server):
+with the base URL of the **DSF FHIR server**):
 
 ```
 https://<dsf-fhir-base-url>/fhir/Task?status=draft&identifier=http://dsf.dev/sid/task-identifier|http://medizininformatik-initiative.de/bpe/Process/dataSend/1.0/dataSendStart
@@ -193,7 +193,7 @@ docker compose up -d
 ./send-report.sh report-de-identified.json http://localhost:8080/fhir
 ```
 
-Send the Task to the DSF FHIR Server using curl
+Send the Task to the **DSF FHIR Server** using curl
 based on a [Test Setup](https://github.com/medizininformatik-initiative/mii-processes-test-setup/blob/main/docker/README-Process-Data-Transfer.md):
 ```
 curl -H "Accept: application/xml+fhir" -H "Content-Type: application/fhir+xml" \
