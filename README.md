@@ -88,11 +88,11 @@ send-report.sh <report-file> <report-server> [-i <issuer-url> -c <client-id> -s 
 
 ### **3. DSF DataTransfer**
 
-Using the [MII Data Transfer Process](https://github.com/medizininformatik-initiative/mii-process-data-transfer),
+Using the [MII DataTransfer process](https://github.com/medizininformatik-initiative/mii-process-data-transfer),
 the MeasureReport can be sent from the **DIC FHIR server** to the **HRP FHIR server**. A detailed description
 of the DataTransfer process can be found [here](https://github.com/medizininformatik-initiative/mii-process-data-transfer/wiki).
 
-There are two possibilities to execute the data transfer.
+There are two possibilities to execute the DataTransfer process.
 
 **(a) Via Command Line**
 
@@ -116,23 +116,23 @@ curl \
 https://<dsf-fhir-base-url>/fhir/Task
 ```
 
-- `TransferTask.xml` corresponding Task resource
+- `TransferTask.xml` corresponding task resource
 - `<dsf-fhir-base-url>` base URL of the **DSF FHIR server**
 - `client-certificate.pem` client certificate
 - `client-certificate_private-key.pem` private key belonging to the client certificate
 
 ---
 
-**b) Via DataSendStart Task in the DSF Frontend**
+**(b) Via DataSendStart Task in the DSF Frontend**
 
-The data transfer process can be started in the DSF frontend by calling the following URL (replace `<dsf-fhir-base-url>` 
+The DataTransfer process can be started in the DSF frontend by calling the following URL (replace `<dsf-fhir-base-url>` 
 with the base URL of the **DSF FHIR server**):
 
 ```
 https://<dsf-fhir-base-url>/fhir/Task?status=draft&identifier=http://dsf.dev/sid/task-identifier|http://medizininformatik-initiative.de/bpe/Process/dataSend/1.0/dataSendStart
 ```
 
-The data transfer is started with "Start Process" using the following entries in the input area:
+The Task is triggered by clicking the 'Start Process' button and entering the following values in the input fields:
 
 dms-identifier
 - `http://dsf.dev/sid/organization-identifier`
