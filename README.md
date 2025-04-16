@@ -4,34 +4,34 @@ CQL Measure for the NUM-CON-MON project.
 
 ---
 
-## **Content**
+## Content
 
-1. [Description](#description)
-2. [Files](#files)
-3. [Deployment](#deployment)
+[Description](#description)
+[Files](#files)
+[Deployment](#deployment)
     - [1. Evaluate Measure](#1-evaluate-measure)
     - [2. Upload MeasureReport](#2-upload-measurereport)
     - [3. DSF DataTransfer](#3-dsf-datatransfer)
-4. [Prerequisites](#prerequisites)
-6. [Setting up the Test Environment & Test Data Transfer](#setting-up-the-test-environment--test-data-transfer)
+[Prerequisites](#prerequisites)
+[Setting up the Test Environment & Test Data Transfer](#setting-up-the-test-environment--test-data-transfer)
 
 ---
 
-## **Description**
+## Description
 
-1.  Evaluates a Measure resource on a FHIR server.
-2.  Extracts the following data:
+- Evaluates a Measure resource on a FHIR server.
+- Extracts the following data:
     -   Total number of patients in two cohorts.
     -   Breakdown for Cohort 2:
         -   Distribution of health insurance affiliation by location.
         -   Distribution by department.
         -   Distribution by gender.
         -   Distribution by age group (<18 years, 18–64 years, 65+ years).
-3.  Stores the extracted data in CSV files for easy analysis and as a FHIR MeasureReport in a JSON file.
+- Stores the extracted data in CSV files for easy analysis and as a FHIR MeasureReport in a JSON file.
 
 ---
 
-## **Files**
+## Files
 
 -   `num-con-mon.yml`: Measure definition in YAML format
 -   `num-con-mon-cql`: CQL-script containing the definitions for resource counts
@@ -44,19 +44,19 @@ CQL Measure for the NUM-CON-MON project.
 
 ---
 
-## **Deployment**  
+## Deployment 
 
 For deployment purposes, it is essential to distinguish between the **DIC FHIR server** and the **DSF FHIR server**.
 The **DIC FHIR server** houses all CDS-related FHIR resources. In contrast, the **DSF FHIR server**, alongside BPE,
 constitutes a primary component of the DSF, containing the necessary FHIR resources for the DSF process workflow.
 
-### **1. Evaluate Measure**
+### 1. Evaluate Measure
 
 Execute the `evaluate-measure.sh` script, passing the URL of the **DIC FHIR server** as a parameter. If no URL is provided, 
 `http://localhost:8080/fhir` is used by default:
 
 ```bash
-./evaluate-measure.sh <dic-fhir-base-url>/fhir
+./evaluate-measure.sh <dic-fhir-base-url>
 ```
 
 `evaluate-measure.sh` automates the evaluation of a Measure YAML file on the **DIC FHIR server**. A detailed report is created, 
@@ -68,16 +68,18 @@ and specific metrics are extracted into CSV files for further analysis. The scri
 - `gender.csv`: Distribution by gender.
 - `age-class.csv`: Distribution by age groups.
 
-### **2. Upload MeasureReport**
+### 2. Upload MeasureReport
 
 For data transfer via DSF, the `report-de-identified.json` MeasureReport must be sent with an associated DocumentReference 
-to the **DIC FHIR server**. This is accomplished using the `send-report.sh` script. If a DocumentReference 
+to the **DIC FHIR server** (assuming this is also the FHIR which is configurated in the BPE docker-compose-yml seetings 
+for [DE_MEDIZININFORMATIK_INITIATIVE_DATA_TRANSFER_DIC_FHIR_SERVER_BASE_URL](https://github.com/medizininformatik-initiative/mii-process-data-transfer/wiki/Process-Data-Transfer-Configuration-v1.0.x.x#de_medizininformatik_initiative_data_transfer_dic_fhir_server_base_url)). 
+This is accomplished using the `send-report.sh` script. If a DocumentReference 
 with the same project identification system (`http://medizininformatik-initiative.de/fhir/CodeSystem/data-transfer`) 
 and value (`num-con-mon`) already exists on the **DIC FHIR server**, the DocumentReference is updated to point to the new MeasureReport. 
 A previous MeasureReport is not updated or deleted and remains on the **DIC FHIR server**.
 
 ```bash
-./send-report.sh report-de-identified.json <dic-fhir-base-url>/fhir
+./send-report.sh report-de-identified.json <dic-fhir-base-url>
 ```
 
 ```
@@ -86,7 +88,7 @@ send-report.sh <report-file> <report-server> [-u <user> -p <password>]
 send-report.sh <report-file> <report-server> [-i <issuer-url> -c <client-id> -s <client-secret>]
 ```
 
-### **3. DSF DataTransfer**
+### 3. DSF DataTransfer
 
 Using the [MII DataTransfer process](https://github.com/medizininformatik-initiative/mii-process-data-transfer),
 the MeasureReport can be sent from the **DIC FHIR server** to the **HRP FHIR server**. A detailed description
@@ -113,7 +115,7 @@ curl \
 --key client-certificate_private-key.pem \
 -H "Accept: application/fhir+xml" -H "Content-Type: application/fhir+xml" \
 -d @TransferTask.xml \
-https://<dsf-fhir-base-url>/fhir/Task
+https://<dsf-fhir-base-url>/Task
 ```
 
 - `TransferTask.xml` corresponding task resource
@@ -129,7 +131,7 @@ The DataTransfer process can be started in the DSF frontend by calling the follo
 with the base URL of the **DSF FHIR server**):
 
 ```
-https://<dsf-fhir-base-url>/fhir/Task?status=draft&identifier=http://dsf.dev/sid/task-identifier|http://medizininformatik-initiative.de/bpe/Process/dataSend/1.0/dataSendStart
+https://<dsf-fhir-base-url>/Task?status=draft&identifier=http://dsf.dev/sid/task-identifier|http://medizininformatik-initiative.de/bpe/Process/dataSend/1.0/dataSendStart
 ```
 
 The Task is triggered by clicking the 'Start Process' button and entering the following values in the input fields:
@@ -144,7 +146,7 @@ project-identifier
 
 ---
 
-## **Prerequisites**
+## Prerequisites
 
 1. **Install `jq`**:
    For creating the CSV files (https://jqlang.org/).
@@ -166,7 +168,7 @@ brew install borkdude/brew/babashka
 
 ---
 
-## **Setting up the Test Environment & Test Data Transfer**
+### Setting up the Test Environment & Test Data Transfer
 
 1. Start Blaze
 ```sh
@@ -181,31 +183,4 @@ docker compose up -d
 3. Import test data
 ```sh
 ./import-data.sh
-```
-
-4. Evaluate Measure
-```sh
-./evaluate-measure.sh
-```
-
-5. Upload MeasureReport
-```sh
-./send-report.sh report-de-identified.json http://localhost:8080/fhir
-```
-
-Send the Task to the **DSF FHIR Server** using curl
-based on a [Test Setup](https://github.com/medizininformatik-initiative/mii-processes-test-setup/blob/main/docker/README-Process-Data-Transfer.md):
-```
-curl -H "Accept: application/xml+fhir" -H "Content-Type: application/fhir+xml" \
--d @TransferTask.xml \
---ssl-no-revoke --cacert cert/ca/testca_certificate.pem \
---cert cert/Webbrowser_Test_User/Webbrowser_Test_User_certificate.pem \
---key cert/Webbrowser_Test_User/Webbrowser_Test_User_private-key.pem \
---pass password \
-https://dic1/fhir/Task
-```
-
-6. Stop Blaze and remove data (delete docker volume)
-```sh
-docker compose down -v
 ```
