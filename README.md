@@ -6,14 +6,14 @@ CQL Measure for the NUM-CON-MON project.
 
 ## Content
 
-[Description](#description)
-[Files](#files)
-[Deployment](#deployment)
-    - [1. Evaluate Measure](#1-evaluate-measure)
-    - [2. Upload MeasureReport](#2-upload-measurereport)
-    - [3. DSF DataTransfer](#3-dsf-datatransfer)
-[Prerequisites](#prerequisites)
-[Setting up the Test Environment & Test Data Transfer](#setting-up-the-test-environment--test-data-transfer)
+- [Description](#description)
+- [Files](#files)
+- [Deployment](#deployment)
+  - [Evaluate Measure](#1-evaluate-measure)
+  - [Upload MeasureReport](#2-upload-measurereport)
+  - [DSF DataTransfer](#3-dsf-datatransfer)
+- [Prerequisites](#prerequisites)
+- [Setting up the Test Environment & Test Data Transfer](#setting-up-the-test-environment--test-data-transfer)
 
 ---
 
