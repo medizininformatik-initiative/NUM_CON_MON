@@ -71,12 +71,8 @@ and specific metrics are extracted into CSV files for further analysis. The scri
 ### 2. Upload MeasureReport
 
 For data transfer via DSF, the `report-de-identified.json` MeasureReport must be sent with an associated DocumentReference 
-to the **DIC FHIR server** (assuming this is also the FHIR which is configurated in the BPE docker-compose-yml seetings 
-for [DE_MEDIZININFORMATIK_INITIATIVE_DATA_TRANSFER_DIC_FHIR_SERVER_BASE_URL](https://github.com/medizininformatik-initiative/mii-process-data-transfer/wiki/Process-Data-Transfer-Configuration-v1.0.x.x#de_medizininformatik_initiative_data_transfer_dic_fhir_server_base_url)). 
-This is accomplished using the `send-report.sh` script. If a DocumentReference 
-with the same project identification system (`http://medizininformatik-initiative.de/fhir/CodeSystem/data-transfer`) 
-and value (`num-con-mon`) already exists on the **DIC FHIR server**, the DocumentReference is updated to point to the new MeasureReport. 
-A previous MeasureReport is not updated or deleted and remains on the **DIC FHIR server**.
+to the **DIC FHIR server** (assuming this is also the FHIR server which is configurated in the BPE docker-compose-yml for [DE_MEDIZININFORMATIK_INITIATIVE_DATA_TRANSFER_DIC_FHIR_SERVER_BASE_URL](https://github.com/medizininformatik-initiative/mii-process-data-transfer/wiki/Process-Data-Transfer-Configuration-v1.0.x.x#de_medizininformatik_initiative_data_transfer_dic_fhir_server_base_url)). This is accomplished using the `send-report.sh` script. If a DocumentReference with the same project identification system (`http://medizininformatik-initiative.de/fhir/CodeSystem/data-transfer`) 
+and value (`num-con-mon`) already exists on the **DIC FHIR server**, the DocumentReference is updated to point to the new MeasureReport. A previous MeasureReport is not updated or deleted and remains on the **DIC FHIR server**.
 
 ```bash
 ./send-report.sh report-de-identified.json <dic-fhir-base-url>
