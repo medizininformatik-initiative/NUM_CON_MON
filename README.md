@@ -6,28 +6,28 @@ CQL Measure for the NUM-CON-MON project.
 
 ## Content
 
-- [Description](#description)
-- [Files](#files)
-- [Deployment](#deployment)
-  - [Evaluate Measure](#1-evaluate-measure)
-  - [Upload MeasureReport](#2-upload-measurereport)
-  - [DSF DataTransfer](#3-dsf-datatransfer)
-- [Prerequisites](#prerequisites)
-- [Setting up the Test Environment & Test Data Transfer](#setting-up-the-test-environment--test-data-transfer)
+1. [Description](#description)
+1. [Files](#files)
+1. [Deployment](#deployment)
+    1. [Evaluate Measure](#i-evaluate-measure)
+    1. [Upload MeasureReport](#ii-upload-measurereport)
+    1. [DSF DataTransfer](#iii-dsf-datatransfer)
+1. [Prerequisites](#prerequisites)
+1. [Setting up the Test Environment](#setting-up-the-test-environment)
 
 ---
 
 ## Description
 
-- Evaluates a Measure resource on a FHIR server.
-- Extracts the following data:
+1. Evaluates a Measure resource on a FHIR server.
+1. Extracts the following data:
     -   Total number of patients in two cohorts.
     -   Breakdown for Cohort 2:
         -   Distribution of health insurance affiliation by location.
         -   Distribution by department.
         -   Distribution by gender.
         -   Distribution by age group (<18 years, 18–64 years, 65+ years).
-- Stores the extracted data in CSV files for easy analysis and as a FHIR MeasureReport in a JSON file.
+1. Stores the extracted data in CSV files for easy analysis and as a FHIR MeasureReport in a JSON file.
 
 ---
 
@@ -50,7 +50,7 @@ For deployment purposes, it is essential to distinguish between the **DIC FHIR s
 The **DIC FHIR server** houses all CDS-related FHIR resources. In contrast, the **DSF FHIR server**, alongside BPE,
 constitutes a primary component of the DSF, containing the necessary FHIR resources for the DSF process workflow.
 
-### 1. Evaluate Measure
+### i. Evaluate Measure
 
 Execute the `evaluate-measure.sh` script, passing the URL of the **DIC FHIR server** as a parameter. If no URL is provided, 
 `http://localhost:8080/fhir` is used by default:
@@ -68,7 +68,7 @@ and specific metrics are extracted into CSV files for further analysis. The scri
 - `gender.csv`: Distribution by gender.
 - `age-class.csv`: Distribution by age groups.
 
-### 2. Upload MeasureReport
+### ii. Upload MeasureReport
 
 For data transfer via DSF, the `report-de-identified.json` MeasureReport must be sent with an associated DocumentReference 
 to the **DIC FHIR server** (assuming this is also the FHIR server which is configurated in the BPE docker-compose-yml for [DE_MEDIZININFORMATIK_INITIATIVE_DATA_TRANSFER_DIC_FHIR_SERVER_BASE_URL](https://github.com/medizininformatik-initiative/mii-process-data-transfer/wiki/Process-Data-Transfer-Configuration-v1.0.x.x#de_medizininformatik_initiative_data_transfer_dic_fhir_server_base_url)). This is accomplished using the `send-report.sh` script. If a DocumentReference with the same project identification system (`http://medizininformatik-initiative.de/fhir/CodeSystem/data-transfer`) 
@@ -84,7 +84,7 @@ send-report.sh <report-file> <report-server> [-u <user> -p <password>]
 send-report.sh <report-file> <report-server> [-i <issuer-url> -c <client-id> -s <client-secret>]
 ```
 
-### 3. DSF DataTransfer
+### iii. DSF DataTransfer
 
 Using the [MII DataTransfer process](https://github.com/medizininformatik-initiative/mii-process-data-transfer),
 the MeasureReport can be sent from the **DIC FHIR server** to the **HRP FHIR server**. A detailed description
@@ -118,8 +118,6 @@ https://<dsf-fhir-base-url>/Task
 - `<dsf-fhir-base-url>` base URL of the **DSF FHIR server**
 - `client-certificate.pem` client certificate
 - `client-certificate_private-key.pem` private key belonging to the client certificate
-
----
 
 **(b) Via DataSendStart Task in the DSF Frontend**
 
@@ -164,7 +162,7 @@ brew install borkdude/brew/babashka
 
 ---
 
-### Setting up the Test Environment & Test Data Transfer
+### Setting up the Test Environment
 
 1. Start Blaze
 ```sh
