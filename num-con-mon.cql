@@ -15,11 +15,11 @@ context Patient
 
 define "Cohort 1":
   exists (from [Consent] C
-    where C.provision.provision.code.coding contains "MDAT wissenschaftlich nutzen EU DSGVO NIVEAU")
+    where C.provision.provision.where(type = 'PERMIT').code ~ "MDAT wissenschaftlich nutzen EU DSGVO NIVEAU")
 
 define Consent:
   from [Consent] C
-    where C.provision.provision.code.coding contains "KKDAT 5J retrospektiv wissenschaftlich nutzen"
+    where C.provision.provision.where(type = 'PERMIT').code ~ "KKDAT 5J retrospektiv wissenschaftlich nutzen"
 
 define "Cohort 2":
   exists (Consent)
@@ -27,11 +27,14 @@ define "Cohort 2":
 define IkNumber:
   Patient.identifier.where(type ~ KVZ10 or type ~ GKV).assigner.identifier.value.first()
 
+define function Provision_KKDAT_Start(c FHIR.Consent):
+  c.provision.provision.where(type = 'PERMIT' and code ~ "KKDAT 5J retrospektiv wissenschaftlich nutzen").period.start
+
 define Encounters:
   from [Encounter: Code 'abteilungskontakt' from Kontaktebene] E
     with Consent C
-      such that Abs(months between E.period.start and C.dateTime) <= 2
-    where E.status = 'finished' or E.status = 'in-progress'
+      such that E.period contains Provision_KKDAT_Start(C)
+    where E.status = 'finished'
     sort by period.start
 
 define DepartmentKey:
