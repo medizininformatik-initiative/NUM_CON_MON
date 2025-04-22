@@ -42,7 +42,7 @@
    :dateTime (str date)
    :provision
    {:provision
-    [{:type "PERMIT"
+    [{:type "permit"
       :period
       {:start (str date)
        :end (str (.plusYears date 5))}
