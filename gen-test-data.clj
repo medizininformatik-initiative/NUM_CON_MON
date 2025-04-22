@@ -49,7 +49,10 @@
       :code
       [{:coding
         [{:system "urn:oid:2.16.840.1.113883.3.1937.777.24.5.3"
-          :code code}]}]}]}})
+          :code code}]}
+       {:coding
+        [{:system "foo"
+          :code "bar"}]}]}]}})
 
 (defn encounter-resource
   [{:keys [id status type department-key patient-id start-date-time end-date-time]}]
