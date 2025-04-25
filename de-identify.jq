@@ -4,7 +4,7 @@ def process_stratifier(stratifier):
   stratifier as $stratifier |
 
   # Separate strata into those below threshold and those not
-  stratifier.stratum | [.[] |
+  stratifier.stratum // [] | [.[] |
     . as $stratum |
     ($stratum.population[0].count | tonumber) as $count |
     if $count < ($threshold | tonumber) then
