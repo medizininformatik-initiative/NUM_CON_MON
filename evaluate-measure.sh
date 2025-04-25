@@ -8,6 +8,12 @@ then
     exit 1
 fi
 
+if ! command -v jq &> /dev/null
+then
+    echo "jq could not be found. Please use your package manager to install it."
+    exit 1
+fi
+
 REPORT=$(blazectl --server "$BASE" evaluate-measure num-con-mon.yml | ./de-identify.sh | tee report-de-identified.json)
 
 echo
