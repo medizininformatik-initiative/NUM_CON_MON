@@ -14,10 +14,14 @@ then
     exit 1
 fi
 
-REPORT=$(blazectl --server "$BASE" evaluate-measure num-con-mon.yml | ./de-identify.sh | tee report-de-identified.json)
+blazectl --server "$BASE" evaluate-measure num-con-mon.yml > report.json
 
 echo
-echo "Finished generating the MeasureReport saved under: report-de-identified.json"
+echo "Finished generating the original MeasureReport saved under: report.json"
+
+REPORT=$(cat report.json | ./de-identify.sh | tee report-de-identified.json)
+
+echo "Finished generating the de-identified MeasureReport saved under: report-de-identified.json"
 echo
 echo "Anzahl Patienten Kohorte 1: $(echo "$REPORT" | jq '.group[0].population[0].count')"
 echo "Anzahl Patienten Kohorte 2: $(echo "$REPORT" | jq '.group[1].population[0].count')"
