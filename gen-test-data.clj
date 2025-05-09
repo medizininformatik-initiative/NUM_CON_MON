@@ -66,8 +66,7 @@
         :code type}]}]
     :serviceType
     {:coding
-     [{:system "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel"
-       :code department-key}]}
+     [department-key]}
     :subject {:reference (str "Patient/" patient-id)}}
     start-date-time (assoc-in [:period :start] (str start-date-time))
     end-date-time (assoc-in [:period :end] (str end-date-time))))
@@ -180,7 +179,7 @@
       :birthDate (some-> birthDate str)})))
 
 (defn rand-date-time []
-  (LocalDate/of (- 2025 (rand-int 100)) (inc (rand-int 12)) (inc (rand-int 28))))
+  (LocalDate/of ^int (- 2025 (rand-int 100)) ^int (inc (rand-int 12)) ^int (inc (rand-int 28))))
 
 (defn gen-consent-data [patient-id]
   {:id patient-id
@@ -230,12 +229,170 @@
    "2425"
    "3700"])
 
+(def extended-department-keys
+  ["0100"
+   "0200"
+   "0300"
+   "0400"
+   "0500"
+   "0600"
+   "0700"
+   "0800"
+   "0900"
+   "1000"
+   "1100"
+   "1200"
+   "1300"
+   "1400"
+   "1500"
+   "1600"
+   "1700"
+   "1800"
+   "1900"
+   "2000"
+   "2100"
+   "2200"
+   "2300"
+   "2400"
+   "2500"
+   "2600"
+   "2700"
+   "2800"
+   "2900"
+   "3000"
+   "3100"
+   "3200"
+   "3300"
+   "3400"
+   "3500"
+   "3600"
+   "2316"
+   "2425"
+   "3700"
+   "0102"
+   "0103"
+   "0104"
+   "0105"
+   "0106"
+   "0107"
+   "0108"
+   "0109"
+   "0114"
+   "0150"
+   "0151"
+   "0152"
+   "0153"
+   "0154"
+   "0156"
+   "0224"
+   "0260"
+   "0261"
+   "0410"
+   "0436"
+   "0510"
+   "0524"
+   "0533"
+   "0607"
+   "0610"
+   "0706"
+   "0710"
+   "0910"
+   "1004"
+   "1005"
+   "1006"
+   "1007"
+   "1009"
+   "1011"
+   "1012"
+   "1014"
+   "1028"
+   "1050"
+   "1051"
+   "1136"
+   "1410"
+   "1513"
+   "1516"
+   "1518"
+   "1519"
+   "1520"
+   "1523"
+   "1536"
+   "1550"
+   "1551"
+   "2021"
+   "2036"
+   "2050"
+   "2118"
+   "2120"
+   "2136"
+   "2150"
+   "2309"
+   "2315"
+   "2402"
+   "2405"
+   "2406"
+   "2810"
+   "2851"
+   "2852"
+   "2856"
+   "2928"
+   "2930"
+   "2931"
+   "2950"
+   "2951"
+   "2952"
+   "2953"
+   "2954"
+   "2955"
+   "2956"
+   "2960"
+   "2961"
+   "3060"
+   "3061"
+   "3110"
+   "3160"
+   "3161"
+   "3233"
+   "3305"
+   "3350"
+   "3460"
+   "3601"
+   "3603"
+   "3610"
+   "3617"
+   "3618"
+   "3621"
+   "3622"
+   "3624"
+   "3626"
+   "3628"
+   "3650"
+   "3651"
+   "3652"
+   "3750"
+   "3751"
+   "3752"
+   "3753"
+   "3754"
+   "3755"
+   "3756"
+   "3757"
+   "3758"])
+
+(defn rand-department-key []
+  {:system "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel"
+   :code (rand-nth department-keys)})
+
+(defn rand-extended-department-key []
+  {:system "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert"
+   :code (rand-nth extended-department-keys)})
+
 (defn gen-encounter-data [patient-id]
   (map-indexed
    #(assoc %2 :id (str patient-id "-" %1))
    (for [status (repeatedly 2 #(rand-nth ["planned" "in-progress" "onleave" "finished" "finished" "finished" "cancelled" "entered-in-error" "unknown"]))
          type (repeatedly 2 #(rand-nth ["einrichtungskontakt" "abteilungskontakt" "versorgungsstellenkontakt"]))
-         department-key (repeatedly 2 #(rand-nth department-keys))
+         department-key [(rand-department-key) (rand-extended-department-key)]
          start-date-time (repeatedly 2 #(rand-date-time))]
      (cond->
       {:status status
