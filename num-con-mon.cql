@@ -38,7 +38,7 @@ define Encounters:
     sort by period.start
 
 define DepartmentKey:
-   First(First(Encounters).serviceType.coding.where(system = 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel').code)
+   First(First(Encounters).serviceType.coding.where(system in {'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel', 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert'}).code)
 
 define Gender:
   if Patient.gender = 'other' then
