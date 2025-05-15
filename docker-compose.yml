@@ -3,9 +3,11 @@ services:
     image: "samply/blaze:0.34"
     environment:
       LOG_LEVEL: "debug"
+      DB_SEARCH_PARAM_BUNDLE: "/app/custom-search-parameters.json"
     ports:
     - "8080:8080"
     volumes:
+    - "./kds/Bundle-mii-exa-meta-searchparam-collection-bundle.json:/app/custom-search-parameters.json:ro"
     - "blaze-data:/app/data"
 volumes:
   blaze-data:

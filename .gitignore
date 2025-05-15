@@ -1,4 +1,4 @@
-test-data
-*.csv
-*.json
+/test-data
+/*.csv
+/*.json
 !num-con-mon-elm.json
