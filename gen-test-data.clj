@@ -4,7 +4,8 @@
          '[clojure.java.shell :refer [sh]]
          '[cheshire.core :as json])
 
-(import '[java.time LocalDate])
+(import '[java.time LocalDate OffsetDateTime ZoneOffset])
+(import '[java.time.format DateTimeFormatter])
 
 (defn patient-resource [{:keys [id ik-number gender birthDate]}]
   (cond->
@@ -39,13 +40,13 @@
   {:resourceType "Consent"
    :id id
    :patient {:reference (str "Patient/" patient-id)}
-   :dateTime (str date)
+   :dateTime (.format DateTimeFormatter/ISO_OFFSET_DATE_TIME date)
    :provision
    {:provision
     [{:type "permit"
       :period
-      {:start (str date)
-       :end (str (.plusYears date 5))}
+      {:start (.format DateTimeFormatter/ISO_OFFSET_DATE_TIME date)
+       :end (.format DateTimeFormatter/ISO_OFFSET_DATE_TIME (.plusYears date 5))}
       :code
       [{:coding
         [{:system "urn:oid:2.16.840.1.113883.3.1937.777.24.5.3"
@@ -68,8 +69,8 @@
     {:coding
      [department-key]}
     :subject {:reference (str "Patient/" patient-id)}}
-    start-date-time (assoc-in [:period :start] (str start-date-time))
-    end-date-time (assoc-in [:period :end] (str end-date-time))))
+    start-date-time (assoc-in [:period :start] (.format DateTimeFormatter/ISO_LOCAL_DATE start-date-time))
+    end-date-time (assoc-in [:period :end] (.format DateTimeFormatter/ISO_LOCAL_DATE end-date-time))))
 
 (defn patient-bundle
   [{{patient-id :id :as patient} :patient :keys [consent encounter]}]
@@ -178,8 +179,12 @@
       :gender gender
       :birthDate (some-> birthDate str)})))
 
-(defn rand-date-time []
+(defn rand-date []
   (LocalDate/of ^int (- 2025 (rand-int 100)) ^int (inc (rand-int 12)) ^int (inc (rand-int 28))))
+
+(defn rand-date-time []
+  (OffsetDateTime/of ^int (- 2025 (rand-int 100)) ^int (inc (rand-int 12)) ^int (inc (rand-int 28))
+                     ^int (rand-int 23) ^int (rand-int 60) ^int (rand-int 60) 0 ZoneOffset/UTC))
 
 (defn gen-consent-data [patient-id]
   {:id patient-id
@@ -390,7 +395,7 @@
 (defn gen-encounter-data [patient-id]
   (map-indexed
    #(assoc %2 :id (str patient-id "-" %1))
-   (for [status (repeatedly 2 #(rand-nth ["planned" "in-progress" "onleave" "finished" "finished" "finished" "cancelled" "entered-in-error" "unknown"]))
+   (for [status (repeatedly 4 #(rand-nth ["planned" "in-progress" "onleave" "finished" "finished" "finished" "cancelled" "entered-in-error" "unknown"]))
          type (repeatedly 2 #(rand-nth ["einrichtungskontakt" "abteilungskontakt" "versorgungsstellenkontakt"]))
          department-key [(rand-department-key) (rand-extended-department-key)]
          start-date-time (repeatedly 2 #(rand-date-time))]

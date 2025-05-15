@@ -35,7 +35,7 @@ define Encounters:
     with Consent C
       such that E.period contains Provision_KKDAT_Start(C)
     where E.status = 'finished'
-    sort by period.start
+    sort by period.start.value
 
 define DepartmentKey:
    First(First(Encounters).serviceType.coding.where(system in {'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel', 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert'}).code)
