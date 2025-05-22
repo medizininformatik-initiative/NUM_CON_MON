@@ -8,18 +8,33 @@ then
     exit 1
 fi
 
+VERSION=$(blazectl --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+REQUIRED_VERSION="1.0.0"
+
+# Use sort -V to compare versions properly
+if ! printf '%s\n%s\n' "$REQUIRED_VERSION" "$VERSION" | sort -V -C; then
+    echo "Please use at leat version $REQUIRED_VERSION of blazectl for best experience."
+    echo "Your current blazectl version is $VERSION."
+    echo "Please download the newest version from https://github.com/samply/blazectl"
+fi
+
 if ! command -v jq &> /dev/null
 then
     echo "jq could not be found. Please use your package manager to install it."
     exit 1
 fi
 
-blazectl --server "$BASE" evaluate-measure num-con-mon.yml > report.json
+if ! OUTPUT=$(blazectl --server "$BASE" evaluate-measure num-con-mon.yml); then
+    echo
+    echo "$OUTPUT"
+    exit 1
+fi
 
+echo "$OUTPUT" > report.json
 echo
 echo "Finished generating the original MeasureReport saved under: report.json"
 
-REPORT=$(cat report.json | ./de-identify.sh | tee report-de-identified.json)
+REPORT=$(./de-identify.sh < report.json | tee report-de-identified.json)
 
 echo "Finished generating the de-identified MeasureReport saved under: report-de-identified.json"
 echo
