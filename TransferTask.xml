@@ -37,7 +37,7 @@
         <type>
             <coding>
                 <system value="http://medizininformatik-initiative.de/fhir/CodeSystem/data-transfer" />
-                <code value="hrp-identifier" />
+                <code value="dms-identifier" />
             </coding>
         </type>
         <valueReference>
