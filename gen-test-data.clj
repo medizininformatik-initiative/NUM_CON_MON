@@ -17,7 +17,10 @@
        [{:system "http://fhir.de/CodeSystem/identifier-type-de-basis"
          :code (rand-nth (into ["GKV"] (repeat 9 "KVZ10")))}]}
       :system "http://fhir.de/sid/gkv/kvid-10"
-      :value "123456"
+      :_value
+      {:extension
+       [{:url "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+         :valueCode "masked"}]}
       :assigner
       {:identifier
        {:type
