@@ -32,13 +32,18 @@ define function Provision_KKDAT_Start(c FHIR.Consent):
 
 define Encounters:
   from [Encounter: Code 'abteilungskontakt' from Kontaktebene] E
+    where E.status = 'finished' and
+      // should be not needed if encounters where validated
+      E.period.start.value < E.period.end.value
+
+define EncountersWithConsent:
+  from Encounters E
     with Consent C
       such that E.period contains Provision_KKDAT_Start(C)
-    where E.status = 'finished'
     sort by period.start.value
 
 define DepartmentKey:
-   First(First(Encounters).serviceType.coding.where(system in {'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel', 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert'}).code)
+   First(First(EncountersWithConsent).serviceType.coding.where(system in {'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel', 'http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert'}).code)
 
 define Gender:
   if Patient.gender = 'other' then

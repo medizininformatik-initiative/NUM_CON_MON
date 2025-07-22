@@ -172,8 +172,8 @@
 (defn gen-patient-data []
   (map-indexed
    #(assoc %2 :id (str %1))
-   (for [ik-number (take 10 ik-numbers)
-         gender [nil "male" "female" "D" "X"]
+   (for [ik-number (take 20 ik-numbers)
+         gender [nil "male" "female" "male" "female" "male" "female" "male" "female" "D" "X"]
          birthDate (cons nil (range 1950 2020))]
      {:ik-number ik-number
       :gender gender
@@ -404,10 +404,13 @@
        :type type
        :department-key department-key
        :patient-id patient-id}
-       (#{"in-progress" "finished"} status)
+       ;; 10 % non existing start date
+       (and (#{"in-progress" "finished"} status) (< (rand) 0.9))
        (assoc :start-date-time start-date-time)
-       (#{"finished"} status)
-       (assoc :end-date-time (.plusMonths start-date-time (inc (rand-int 12))))))))
+       ;; 10 % non existing end date
+       (and (#{"finished"} status) (< (rand) 0.9))
+       ;; some end dates are before the start date
+       (assoc :end-date-time (.plusMonths start-date-time (dec (rand-int 14))))))))
 
 (defn gen-data []
   (for [{patient-id :id :as patient} (gen-patient-data)]
